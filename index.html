@@ -111,7 +111,7 @@
     <header class="w-full bg-[#1C1512]/95 border-b border-[#3E2F28] px-3 sm:px-6 py-2 sm:py-2.5 flex flex-wrap items-center justify-between gap-2 z-30 shrink-0 shadow-lg">
         <div class="flex items-center gap-2 sm:gap-3 min-w-0">
             <span id="tomb-badge" class="px-2 sm:px-2.5 py-1 rounded-md text-[10px] sm:text-xs font-extrabold uppercase tracking-wider bg-[#B84A39] text-[#F5EFE6] shadow-sm shrink-0">
-                Tomb 1 of 5
+                Tomb 1 of 6
             </span>
             <div class="truncate">
                 <h1 id="header-title-it" class="text-sm sm:text-xl font-bold text-[#F5EFE6] tracking-tight leading-tight truncate">
@@ -249,7 +249,7 @@
                                 <text x="16" y="79">FIORELLINI</text>
                             </g>
 
-                            <!-- Col 5: Tombs 20-22 (Highlight #21 Baccanti) -->
+                            <!-- Col 5: Tombs 20-22 (Highlight #21 Baccanti & #22 Leopardi) -->
                             <g transform="translate(810, 76)" font-size="7.5" fill="#CFC8B8" font-weight="600">
                                 <circle cx="6" cy="4" r="5.5" fill="#D9A74A"/><text x="2" y="6.5" fill="#111" font-size="6" font-weight="800">20</text>
                                 <text x="16" y="7">DEMONI AZZURRI</text>
@@ -261,8 +261,12 @@
                                     <text x="16" y="25" fill="#FFF" font-weight="800">BACCANTI</text>
                                 </g>
 
-                                <circle cx="6" cy="40" r="5.5" fill="#D9A74A"/><text x="2" y="42.5" fill="#111" font-size="6" font-weight="800">22</text>
-                                <text x="16" y="43">LEOPARDI</text>
+                                <!-- HIGHLIGHTED #22 -->
+                                <g class="cursor-pointer" onclick="startTourAtTomb(5)">
+                                    <rect x="-4" y="32" width="102" height="16" rx="4" fill="#E12D2D" fill-opacity="0.25" stroke="#FF5555" stroke-width="1"/>
+                                    <circle cx="6" cy="40" r="6.5" fill="#E12D2D"/><text x="2" y="42.5" fill="#FFF" font-size="6.5" font-weight="800">22</text>
+                                    <text x="16" y="43" fill="#FFF" font-weight="800">LEOPARDI</text>
+                                </g>
                             </g>
 
                             <!-- =======================================================
@@ -350,27 +354,34 @@
                                 <circle cx="965" cy="456" r="11" fill="#E12D2D" stroke="#FFFFFF" stroke-width="2"/>
                                 <text x="965" y="460" fill="#FFFFFF" font-size="9.5" font-weight="800" text-anchor="middle">21</text>
                             </g>
+
+                            <!-- Tomb 6 on Tour: #22 Leopardi -->
+                            <g class="cursor-pointer" onclick="startTourAtTomb(5)">
+                                <circle cx="835" cy="380" r="15" fill="#E12D2D" class="map-pin-halo"/>
+                                <circle cx="835" cy="380" r="11" fill="#E12D2D" stroke="#FFFFFF" stroke-width="2"/>
+                                <text x="835" y="384" fill="#FFFFFF" font-size="9.5" font-weight="800" text-anchor="middle">22</text>
+                            </g>
                         </svg>
                     </div>
                 </div>
 
-                <!-- Right Panel: Featured 5 Tombs List & Large ENTER Button -->
-                <div class="w-full lg:w-80 bg-[#18120F] p-4 sm:p-6 flex flex-col justify-between shrink-0 z-10">
+                <!-- Right Panel: Featured 6 Tombs List & Large ENTER Button -->
+                <div class="w-full lg:w-80 bg-[#18120F] p-4 sm:p-5 flex flex-col justify-between shrink-0 z-10">
                     <div>
-                        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-[#E12D2D]/20 border border-[#E12D2D]/40 text-[#FF6B6B] text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-2">
+                        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-[#E12D2D]/20 border border-[#E12D2D]/40 text-[#FF6B6B] text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-1.5">
                             <span class="w-2 h-2 rounded-full bg-[#E12D2D] animate-ping"></span>
-                            Interactive Tour
+                            6 Featured Tombs
                         </div>
                         <h2 class="text-lg sm:text-xl font-extrabold text-[#F5EFE6] tracking-tight leading-snug">
                             Monterozzi Necropolis
                         </h2>
                         <p class="text-xs text-[#C8B9A6] mt-1 leading-relaxed">
-                            The 5 tombs highlighted in <span class="text-[#FF5555] font-bold">red</span> on the map are ready to explore. Click any red marker or press <strong>ENTER</strong> below to begin.
+                            The 6 tombs highlighted in <span class="text-[#FF5555] font-bold">red</span> on the map are ready to explore. Click any red marker or press <strong>ENTER</strong> below to begin.
                         </p>
 
-                        <!-- List of the 5 Highlighted Tombs -->
-                        <div class="mt-3 sm:mt-4 space-y-1.5 sm:space-y-2">
-                            <button onclick="startTourAtTomb(0)" class="w-full text-left px-3 py-1.5 sm:py-2 rounded-lg bg-[#241B17] hover:bg-[#322520] border border-[#3E2F28] flex items-center gap-3 transition group">
+                        <!-- List of the 6 Highlighted Tombs -->
+                        <div class="mt-2.5 sm:mt-3 space-y-1.5">
+                            <button onclick="startTourAtTomb(0)" class="w-full text-left px-3 py-1.5 rounded-lg bg-[#241B17] hover:bg-[#322520] border border-[#3E2F28] flex items-center gap-3 transition group">
                                 <span class="w-6 h-6 rounded-full bg-[#E12D2D] text-white text-xs font-extrabold flex items-center justify-center shrink-0 shadow">4</span>
                                 <div class="truncate">
                                     <div class="text-xs font-bold text-[#F5EFE6] group-hover:text-[#E6C280] transition truncate">Tomb of Hunting & Fishing</div>
@@ -378,7 +389,7 @@
                                 </div>
                             </button>
 
-                            <button onclick="startTourAtTomb(1)" class="w-full text-left px-3 py-1.5 sm:py-2 rounded-lg bg-[#241B17] hover:bg-[#322520] border border-[#3E2F28] flex items-center gap-3 transition group">
+                            <button onclick="startTourAtTomb(1)" class="w-full text-left px-3 py-1.5 rounded-lg bg-[#241B17] hover:bg-[#322520] border border-[#3E2F28] flex items-center gap-3 transition group">
                                 <span class="w-6 h-6 rounded-full bg-[#E12D2D] text-white text-xs font-extrabold flex items-center justify-center shrink-0 shadow">7</span>
                                 <div class="truncate">
                                     <div class="text-xs font-bold text-[#F5EFE6] group-hover:text-[#E6C280] transition truncate">Tomb of the Lotus Flower</div>
@@ -386,7 +397,7 @@
                                 </div>
                             </button>
 
-                            <button onclick="startTourAtTomb(2)" class="w-full text-left px-3 py-1.5 sm:py-2 rounded-lg bg-[#241B17] hover:bg-[#322520] border border-[#3E2F28] flex items-center gap-3 transition group">
+                            <button onclick="startTourAtTomb(2)" class="w-full text-left px-3 py-1.5 rounded-lg bg-[#241B17] hover:bg-[#322520] border border-[#3E2F28] flex items-center gap-3 transition group">
                                 <span class="w-6 h-6 rounded-full bg-[#E12D2D] text-white text-xs font-extrabold flex items-center justify-center shrink-0 shadow">11</span>
                                 <div class="truncate">
                                     <div class="text-xs font-bold text-[#F5EFE6] group-hover:text-[#E6C280] transition truncate">Tomb of the Two Roofs</div>
@@ -394,7 +405,7 @@
                                 </div>
                             </button>
 
-                            <button onclick="startTourAtTomb(3)" class="w-full text-left px-3 py-1.5 sm:py-2 rounded-lg bg-[#241B17] hover:bg-[#322520] border border-[#3E2F28] flex items-center gap-3 transition group">
+                            <button onclick="startTourAtTomb(3)" class="w-full text-left px-3 py-1.5 rounded-lg bg-[#241B17] hover:bg-[#322520] border border-[#3E2F28] flex items-center gap-3 transition group">
                                 <span class="w-6 h-6 rounded-full bg-[#E12D2D] text-white text-xs font-extrabold flex items-center justify-center shrink-0 shadow">17</span>
                                 <div class="truncate">
                                     <div class="text-xs font-bold text-[#F5EFE6] group-hover:text-[#E6C280] transition truncate">Bartoccini Tomb (3 Views)</div>
@@ -402,19 +413,27 @@
                                 </div>
                             </button>
 
-                            <button onclick="startTourAtTomb(4)" class="w-full text-left px-3 py-1.5 sm:py-2 rounded-lg bg-[#241B17] hover:bg-[#322520] border border-[#3E2F28] flex items-center gap-3 transition group">
+                            <button onclick="startTourAtTomb(4)" class="w-full text-left px-3 py-1.5 rounded-lg bg-[#241B17] hover:bg-[#322520] border border-[#3E2F28] flex items-center gap-3 transition group">
                                 <span class="w-6 h-6 rounded-full bg-[#E12D2D] text-white text-xs font-extrabold flex items-center justify-center shrink-0 shadow">21</span>
                                 <div class="truncate">
                                     <div class="text-xs font-bold text-[#F5EFE6] group-hover:text-[#E6C280] transition truncate">Tomb of the Bacchants</div>
                                     <div class="text-[10px] text-[#A39281]">Baccanti • 510 BCE</div>
                                 </div>
                             </button>
+
+                            <button onclick="startTourAtTomb(5)" class="w-full text-left px-3 py-1.5 rounded-lg bg-[#241B17] hover:bg-[#322520] border border-[#3E2F28] flex items-center gap-3 transition group">
+                                <span class="w-6 h-6 rounded-full bg-[#E12D2D] text-white text-xs font-extrabold flex items-center justify-center shrink-0 shadow">22</span>
+                                <div class="truncate">
+                                    <div class="text-xs font-bold text-[#F5EFE6] group-hover:text-[#E6C280] transition truncate">Tomb of the Leopards (3 Views)</div>
+                                    <div class="text-[10px] text-[#A39281]">Tomba dei Leopardi • 480 BCE</div>
+                                </div>
+                            </button>
                         </div>
                     </div>
 
                     <!-- Large ENTER Button on the Right -->
-                    <div class="mt-4 pt-3 border-t border-[#3E2F28]">
-                        <button onclick="startTourAtTomb(0)" class="w-full py-3.5 sm:py-4 px-6 rounded-xl bg-gradient-to-r from-[#D93829] to-[#B82518] hover:from-[#EB4636] hover:to-[#C92D1F] text-white font-extrabold text-base sm:text-lg tracking-wider uppercase shadow-xl flex items-center justify-center gap-3 transition transform hover:scale-[1.02] active:scale-[0.99] border border-[#FF7A6E]/40">
+                    <div class="mt-3 pt-2.5 border-t border-[#3E2F28]">
+                        <button onclick="startTourAtTomb(0)" class="w-full py-3 sm:py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#D93829] to-[#B82518] hover:from-[#EB4636] hover:to-[#C92D1F] text-white font-extrabold text-base sm:text-lg tracking-wider uppercase shadow-xl flex items-center justify-center gap-3 transition transform hover:scale-[1.02] active:scale-[0.99] border border-[#FF7A6E]/40">
                             <span>ENTER</span>
                             <i class="fa-solid fa-arrow-right-to-bracket text-xl"></i>
                         </button>
@@ -430,98 +449,287 @@
                 <div class="absolute inset-0 w-full h-full">
                     <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" class="w-full h-full">
                         <defs>
+                            <!-- Clear Italian Mediterranean Sky matching the photo -->
                             <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="#2979FF"/>
-                                <stop offset="60%" stop-color="#68B2F8"/>
-                                <stop offset="100%" stop-color="#BBE0FF"/>
+                                <stop offset="0%" stop-color="#1E6AE1"/>
+                                <stop offset="52%" stop-color="#4B95F2"/>
+                                <stop offset="88%" stop-color="#8BC1FA"/>
+                                <stop offset="100%" stop-color="#C8E3FF"/>
                             </linearGradient>
-                            <linearGradient id="stuccoLight" x1="0" y1="0" x2="1" y2="1">
-                                <stop offset="0%" stop-color="#8C7E6E"/>
-                                <stop offset="100%" stop-color="#6B5E50"/>
+
+                            <!-- Sunlit Rough Stucco Wall (Right Block & Upper Left Triangle) -->
+                            <linearGradient id="stuccoSunlit" x1="0" y1="0" x2="0.3" y2="1">
+                                <stop offset="0%" stop-color="#9A8B78"/>
+                                <stop offset="55%" stop-color="#837564"/>
+                                <stop offset="100%" stop-color="#6D6050"/>
                             </linearGradient>
-                            <linearGradient id="stuccoShadow" x1="0" y1="0" x2="1" y2="1">
-                                <stop offset="0%" stop-color="#53493E"/>
-                                <stop offset="100%" stop-color="#383028"/>
+
+                            <!-- Deep Diagonal Shadowed Stucco Wall (Left Sloped Wall) -->
+                            <linearGradient id="stuccoDeepShadow" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#4A4138"/>
+                                <stop offset="65%" stop-color="#38312A"/>
+                                <stop offset="100%" stop-color="#27221D"/>
                             </linearGradient>
-                        </defs>
 
-                        <!-- Mediterranean Sky -->
-                        <rect width="1200" height="460" fill="url(#skyGrad)"/>
+                            <!-- Warm Sunlit Travertine / Concrete Pavement -->
+                            <linearGradient id="pavementSun" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#D4C2A7"/>
+                                <stop offset="50%" stop-color="#DECDB4"/>
+                                <stop offset="100%" stop-color="#C7B498"/>
+                            </linearGradient>
 
-                        <!-- Distant Olive Trees & Monterozzi Grassy Field -->
-                        <path d="M0 410 Q300 390 600 415 T1200 400 L1200 500 L0 500 Z" fill="#6F7D44"/>
-                        <path d="M0 440 Q400 425 850 445 T1200 435 L1200 520 L0 520 Z" fill="#8A9656"/>
+                            <!-- Terracotta Barrel Tile (Coppo) Gradient -->
+                            <linearGradient id="coppoTileGrad" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#C88D68"/>
+                                <stop offset="45%" stop-color="#9E6B4D"/>
+                                <stop offset="100%" stop-color="#5E3E2C"/>
+                            </linearGradient>
 
-                        <!-- Olive Tree Silhouette on Left -->
-                        <g transform="translate(150, 310)">
-                            <path d="M45 95 L45 60 L30 40 M45 65 L65 42" stroke="#4A3C2C" stroke-width="6" stroke-linecap="round"/>
-                            <ellipse cx="30" cy="35" rx="35" ry="22" fill="#556B3E"/>
-                            <ellipse cx="65" cy="38" rx="30" ry="20" fill="#687F4E"/>
-                            <ellipse cx="48" cy="22" rx="28" ry="18" fill="#7A915E"/>
-                        </g>
+                            <linearGradient id="coppoFrontGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#B68567"/>
+                                <stop offset="50%" stop-color="#7D5944"/>
+                                <stop offset="100%" stop-color="#463226"/>
+                            </linearGradient>
 
-                        <!-- Paved Travertine Walkway -->
-                        <polygon points="0,480 1200,470 1200,700 0,700" fill="#D5C5AC"/>
-                        <polygon points="80,700 430,455 580,455 580,555 240,700" fill="#9E8F7B"/>
+                            <!-- 3D Rough-Cast Stucco / Plaster Surface Filter -->
+                            <filter id="roughStuccoFilter" x="0%" y="0%" width="100%" height="100%">
+                                <feTurbulence type="fractalNoise" baseFrequency="0.09 0.11" numOctaves="4" seed="7" result="plasterNoise"/>
+                                <feDiffuseLighting in="plasterNoise" lighting-color="#EBE0D0" surfaceScale="2.6" result="plasterLight">
+                                    <feDistantLight azimuth="135" elevation="48"/>
+                                </feDiffuseLighting>
+                                <feComponentTransfer in="plasterLight" result="plasterTuned">
+                                    <feFuncR type="linear" slope="0.88" intercept="0.08"/>
+                                    <feFuncG type="linear" slope="0.84" intercept="0.07"/>
+                                    <feFuncB type="linear" slope="0.78" intercept="0.06"/>
+                                </feComponentTransfer>
+                                <feBlend mode="multiply" in="plasterTuned" in2="SourceGraphic" result="blendedStucco"/>
+                                <feComposite in="blendedStucco" in2="SourceGraphic" operator="in"/>
+                            </filter>
 
-                        <!-- Sloped Entrance Structure (Casotto) -->
-                        <polygon points="60,445 595,140 595,455 430,455 60,480" fill="url(#stuccoShadow)"/>
-                        <!-- Terracotta Roof Tiles along the slope -->
-                        <g fill="#A86544" stroke="#5A3825" stroke-width="1.5">
-                            <path d="M55,445 Q80,425 105,420 L595,132 L602,145 L62,452 Z"/>
-                        </g>
-
-                        <!-- Front Rectangular Stucco Block Holding the Sign -->
-                        <rect x="575" y="220" width="380" height="335" fill="url(#stuccoLight)" stroke="#4A3F35" stroke-width="2"/>
-                        <!-- Terracotta Roof Cap on Front Block -->
-                        <rect x="568" y="206" width="394" height="18" rx="5" fill="#B56E4B" stroke="#5E3A24" stroke-width="1.5"/>
-
-                        <!-- Cast Ground Shadow -->
-                        <polygon points="575,555 955,555 920,620 120,585" fill="#6E6254" opacity="0.55"/>
-
-                        <!-- PACT Metal Signposts & Clickable Blue-Teal Signboard -->
-                        <g class="cursor-pointer group" onclick="openSignboardModal()">
-                            <!-- Galvanized Steel Poles -->
-                            <rect x="655" y="215" width="12" height="375" rx="4" fill="#B0B7BC" stroke="#6C757D"/>
-                            <rect x="875" y="215" width="12" height="375" rx="4" fill="#B0B7BC" stroke="#6C757D"/>
-
-                            <!-- Signboard Frame -->
-                            <rect x="672" y="250" width="198" height="150" rx="3" fill="#215B73" stroke="#9BA5AC" stroke-width="5" class="transition duration-300 group-hover:stroke-[#E6C280]"/>
-
-                            <!-- Signboard Header -->
-                            <rect x="676" y="254" width="190" height="34" fill="#184356"/>
-                            <text x="685" y="270" fill="#FFFFFF" font-size="9" font-weight="bold">PACT</text>
-                            <rect x="718" y="257" width="68" height="28" fill="#D8CFC2"/>
-                            <text x="795" y="278" fill="#DCEBF2" font-size="6.5">Necropoli dei Monterozzi</text>
-
-                            <!-- Two Text Columns -->
-                            <g fill="#B8D8E8" opacity="0.85">
-                                <rect x="686" y="298" width="76" height="3" rx="1"/>
-                                <rect x="686" y="305" width="72" height="2"/>
-                                <rect x="686" y="310" width="75" height="2"/>
-                                <rect x="686" y="315" width="70" height="2"/>
-                                <rect x="686" y="320" width="74" height="2"/>
-                                <rect x="686" y="325" width="65" height="2"/>
-                                <rect x="686" y="330" width="72" height="2"/>
-
-                                <rect x="776" y="298" width="76" height="3" rx="1"/>
-                                <rect x="776" y="305" width="72" height="2"/>
-                                <rect x="776" y="310" width="74" height="2"/>
-                                <rect x="776" y="315" width="68" height="2"/>
-                                <rect x="776" y="320" width="72" height="2"/>
-                                <rect x="776" y="325" width="64" height="2"/>
-                                <rect x="776" y="330" width="70" height="2"/>
+                            <!-- Reusable Sloped Roof Barrel Tile (Coppo) -->
+                            <g id="sloped-coppo">
+                                <!-- Mortar bed under tile -->
+                                <path d="M-2,14 L34,-5 L36,2 L0,20 Z" fill="#B5A48B"/>
+                                <!-- Curved terracotta barrel tile -->
+                                <path d="M-4,12 Q10,-4 30,-7 L35,1 Q14,6 -1,17 Z" fill="url(#coppoTileGrad)" stroke="#472E20" stroke-width="1.2"/>
+                                <!-- Rounded lip highlight -->
+                                <path d="M-3,11 Q10,-2 28,-5" fill="none" stroke="#E2B897" stroke-width="1.2" opacity="0.65"/>
+                                <!-- Dark hollow under tile -->
+                                <ellipse cx="0" cy="14" rx="5" ry="3.5" transform="rotate(-28 0 14)" fill="#2D1E16"/>
                             </g>
 
-                            <!-- Architectural Plan & Cross Section at Bottom of Signboard (Dynamic per Tomb) -->
-                            <rect x="684" y="366" width="18" height="22" fill="#FFFFFF"/>
+                            <!-- Reusable Front-Facing Roof Barrel Tile (Coppo) for Right Block -->
+                            <g id="front-coppo">
+                                <!-- Mortar bed between arches -->
+                                <rect x="-20" y="6" width="40" height="10" fill="#B7A68E"/>
+                                <!-- Outer terracotta arch -->
+                                <path d="M-17,14 C-17,-6 17,-6 17,14 Z" fill="url(#coppoFrontGrad)" stroke="#4A3427" stroke-width="1.3"/>
+                                <!-- Weathered lichen/sun highlight on top of arch -->
+                                <path d="M-13,8 C-8,-3 8,-3 13,8" fill="none" stroke="#D5B895" stroke-width="1.5" opacity="0.6"/>
+                                <!-- Dark shadow inside barrel arch -->
+                                <path d="M-11,14 C-11,3 11,3 11,14 Z" fill="#2A1F18"/>
+                            </g>
+                        </defs>
+
+                        <!-- 1. Mediterranean Blue Sky -->
+                        <rect width="1200" height="475" fill="url(#skyGrad)"/>
+                        <!-- Subtle wispy horizon clouds on the right -->
+                        <g fill="#FFFFFF" opacity="0.32">
+                            <ellipse cx="1090" cy="340" rx="95" ry="8"/>
+                            <ellipse cx="1140" cy="355" rx="70" ry="5"/>
+                        </g>
+
+                        <!-- 2. Background Olive Trees & Bushes (Left of the Sloped Wall, matching photo) -->
+                        <g transform="translate(95, 210)">
+                            <!-- Utility pole in distance -->
+                            <line x1="28" y1="62" x2="28" y2="155" stroke="#8C857B" stroke-width="2.5"/>
+                            <line x1="23" y1="65" x2="33" y2="65" stroke="#8C857B" stroke-width="2"/>
+                            <!-- Gnarled olive branches -->
+                            <path d="M85,140 L72,95 L48,72 M72,95 L92,65 M125,135 L118,90 L142,68" stroke="#4A3F33" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+                            <!-- Silvery-green olive foliage clusters -->
+                            <ellipse cx="52" cy="68" rx="28" ry="18" fill="#5D6B45"/>
+                            <ellipse cx="85" cy="58" rx="34" ry="22" fill="#6E7D52"/>
+                            <ellipse cx="122" cy="64" rx="38" ry="24" fill="#53613C"/>
+                            <ellipse cx="152" cy="74" rx="32" ry="20" fill="#6A7850"/>
+                            <ellipse cx="98" cy="48" rx="26" ry="15" fill="#839366"/>
+                        </g>
+
+                        <!-- 3. Right-Hand Meadow & Distant Hedgerows (Monterozzi plateau) -->
+                        <path d="M950,388 Q1080,384 1200,390 L1200,490 L950,490 Z" fill="#6E7843"/>
+                        <path d="M950,408 Q1080,404 1200,412 L1200,515 L950,515 Z" fill="#8C9452"/>
+                        <!-- Yellow wildflowers & dry grass texture in right field -->
+                        <g fill="#D9B94B" opacity="0.65">
+                            <rect x="980" y="422" width="190" height="2" rx="1"/>
+                            <rect x="1020" y="434" width="165" height="2.5" rx="1"/>
+                            <rect x="965" y="448" width="220" height="3" rx="1"/>
+                            <rect x="1010" y="464" width="180" height="3" rx="1"/>
+                        </g>
+                        <!-- Distant dark bushes on right horizon -->
+                        <g fill="#3E4729">
+                            <ellipse cx="995" cy="388" rx="16" ry="6"/>
+                            <ellipse cx="1040" cy="387" rx="22" ry="7"/>
+                            <ellipse cx="1115" cy="389" rx="14" ry="5"/>
+                            <ellipse cx="1185" cy="382" rx="18" ry="12"/>
+                        </g>
+
+                        <!-- 4. Left-Hand Grassy Bank & Wildflowers Beside Sloped Wall -->
+                        <polygon points="0,382 140,388 0,485" fill="#7D884E"/>
+                        <polygon points="0,425 95,435 0,535" fill="#636D3D"/>
+                        <g fill="#E5C349" opacity="0.8">
+                            <circle cx="22" cy="445" r="2.5"/><circle cx="38" cy="452" r="2"/><circle cx="15" cy="468" r="2.5"/>
+                            <circle cx="54" cy="462" r="2"/><circle cx="32" cy="482" r="2.5"/><circle cx="72" cy="475" r="2"/>
+                            <circle cx="88" cy="490" r="2.5"/><circle cx="45" cy="502" r="2"/>
+                        </g>
+
+                        <!-- 5. Paved Travertine / Concrete Surrounds & Perspective Curbs -->
+                        <polygon points="0,520 1200,482 1200,700 0,700" fill="url(#pavementSun)"/>
+                        <!-- Right walkway seam lines -->
+                        <line x1="955" y1="490" x2="1200" y2="495" stroke="#B09F86" stroke-width="2"/>
+                        <line x1="948" y1="560" x2="1055" y2="700" stroke="#9B8B73" stroke-width="5"/>
+                        <line x1="1200" y1="625" x2="640" y2="700" stroke="#9B8B73" stroke-width="6"/>
+
+                        <!-- 6. SLOPED STAIRWELL STRUCTURE (LEFT CASOTTO WALL) -->
+                        <g filter="url(#roughStuccoFilter)">
+                            <!-- Base Sunlit Upper-Left Triangle of the Sloped Wall (where sun hits above the shadow line) -->
+                            <polygon points="35,442 585,126 585,455 35,478" fill="url(#stuccoSunlit)"/>
+                            <!-- Crisp Diagonal Cast Shadow across the Sloped Wall (matching photo) -->
+                            <polygon points="155,465 568,155 585,155 585,462 240,482" fill="url(#stuccoDeepShadow)"/>
+                            <!-- Weathered whitish-grey lime efflorescence near bottom-left of sloped wall -->
+                            <polygon points="45,445 275,325 225,470 45,478" fill="#9E978E" opacity="0.45"/>
+                        </g>
+
+                        <!-- Narrow Vertical Side Return of the High Peak (at x=585..602) -->
+                        <polygon points="585,126 602,132 604,218 585,218" fill="#C7B296" stroke="#5E5042" stroke-width="1"/>
+
+                        <!-- 7. INDIVIDUAL SCALLOPED TERRACOTTA ROOF TILES (COPPI) ALONG THE SLOPED WALL -->
+                        <!-- Continuous mortar bed under sloped tiles -->
+                        <polygon points="28,440 584,121 592,134 36,452" fill="#B5A188" stroke="#5A4A3B" stroke-width="1.2"/>
+                        <!-- 17 Overlapping curved terracotta barrel tiles climbing from left to top peak -->
+                        <g>
+                            <use href="#sloped-coppo" transform="translate(32, 430)"/>
+                            <use href="#sloped-coppo" transform="translate(64, 412)"/>
+                            <use href="#sloped-coppo" transform="translate(96, 393)"/>
+                            <use href="#sloped-coppo" transform="translate(128, 375)"/>
+                            <use href="#sloped-coppo" transform="translate(160, 356)"/>
+                            <use href="#sloped-coppo" transform="translate(192, 338)"/>
+                            <use href="#sloped-coppo" transform="translate(224, 319)"/>
+                            <use href="#sloped-coppo" transform="translate(256, 301)"/>
+                            <use href="#sloped-coppo" transform="translate(288, 282)"/>
+                            <use href="#sloped-coppo" transform="translate(320, 264)"/>
+                            <use href="#sloped-coppo" transform="translate(352, 245)"/>
+                            <use href="#sloped-coppo" transform="translate(384, 227)"/>
+                            <use href="#sloped-coppo" transform="translate(416, 208)"/>
+                            <use href="#sloped-coppo" transform="translate(448, 190)"/>
+                            <use href="#sloped-coppo" transform="translate(480, 171)"/>
+                            <use href="#sloped-coppo" transform="translate(512, 153)"/>
+                            <use href="#sloped-coppo" transform="translate(544, 134)"/>
+                            <!-- Top ridge cap tile at the apex -->
+                            <path d="M566,122 Q582,112 598,118 L602,130 L572,134 Z" fill="#C97D55" stroke="#4E3222" stroke-width="1.3"/>
+                        </g>
+
+                        <!-- 8. SHADOWED GROUND TRIANGLE & DARK TUFACEOUS SOIL AT BASE OF SLOPED WALL -->
+                        <polygon points="0,535 160,462 575,458 575,558 0,552" fill="#6D6358"/>
+                        <!-- Dark earth & tufts of grass at base of sloped wall -->
+                        <polygon points="15,525 180,455 572,455 572,495 95,528" fill="#3B352F" opacity="0.75"/>
+                        <g fill="#22261B" opacity="0.85">
+                            <ellipse cx="220" cy="468" rx="18" ry="6"/>
+                            <ellipse cx="345" cy="472" rx="22" ry="7"/>
+                            <ellipse cx="425" cy="466" rx="15" ry="5"/>
+                            <ellipse cx="490" cy="470" rx="16" ry="6"/>
+                        </g>
+                        <!-- Crisp long diagonal shadow cast on foreground concrete pavement -->
+                        <polygon points="0,545 575,555 918,622 910,632 0,565" fill="#6B6052" opacity="0.72"/>
+
+                        <!-- 9. FRONT RECTANGULAR STUCCO BLOCK (RIGHT CASOTTO WALL) -->
+                        <g filter="url(#roughStuccoFilter)">
+                            <rect x="572" y="218" width="382" height="342" fill="url(#stuccoSunlit)" stroke="#4A3F35" stroke-width="1.5"/>
+                            <!-- Subtle vertical corner highlight on left edge of block -->
+                            <rect x="572" y="218" width="8" height="342" fill="#AEA08E" opacity="0.35"/>
+                            <!-- Subtle dark shadow cast behind the PACT signboard onto the stucco wall -->
+                            <rect x="684" y="256" width="196" height="150" fill="#2A231D" opacity="0.45"/>
+                        </g>
+
+                        <!-- 10. FRONT-FACING SCALLOPED TERRACOTTA ROOF TILES ON TOP OF RIGHT BLOCK -->
+                        <!-- Terracotta brick cornice ledge under the tiles -->
+                        <rect x="566" y="212" width="396" height="9" rx="2" fill="#A66846" stroke="#4D3122" stroke-width="1.2"/>
+                        <!-- Row of 10 front-facing barrel tiles (coppi) matching the photo -->
+                        <g transform="translate(0, 199)">
+                            <use href="#front-coppo" transform="translate(592, 0)"/>
+                            <use href="#front-coppo" transform="translate(630, 0)"/>
+                            <use href="#front-coppo" transform="translate(668, 0)"/>
+                            <use href="#front-coppo" transform="translate(706, 0)"/>
+                            <use href="#front-coppo" transform="translate(744, 0)"/>
+                            <use href="#front-coppo" transform="translate(782, 0)"/>
+                            <use href="#front-coppo" transform="translate(820, 0)"/>
+                            <use href="#front-coppo" transform="translate(858, 0)"/>
+                            <use href="#front-coppo" transform="translate(896, 0)"/>
+                            <use href="#front-coppo" transform="translate(934, 0)"/>
+                        </g>
+
+                        <!-- 11. PACT METAL SIGNPOSTS & CLICKABLE BLUE-TEAL SIGNBOARD -->
+                        <g class="cursor-pointer group" onclick="openSignboardModal()">
+                            <!-- Post shadows on stucco wall -->
+                            <rect x="666" y="220" width="8" height="340" fill="#2A231C" opacity="0.45"/>
+                            <rect x="886" y="220" width="8" height="340" fill="#2A231C" opacity="0.45"/>
+
+                            <!-- Galvanized Steel Mounting Brackets -->
+                            <rect x="654" y="248" width="24" height="5" fill="#9AA2A8" stroke="#5A6268"/>
+                            <rect x="866" y="248" width="24" height="5" fill="#9AA2A8" stroke="#5A6268"/>
+                            <rect x="654" y="396" width="24" height="5" fill="#9AA2A8" stroke="#5A6268"/>
+                            <rect x="866" y="396" width="24" height="5" fill="#9AA2A8" stroke="#5A6268"/>
+
+                            <!-- Galvanized Steel Vertical Poles -->
+                            <rect x="655" y="212" width="12" height="382" rx="4" fill="#B8C0C6" stroke="#646D75" stroke-width="1.2"/>
+                            <rect x="875" y="212" width="12" height="382" rx="4" fill="#B8C0C6" stroke="#646D75" stroke-width="1.2"/>
+
+                            <!-- Signboard Brushed Aluminum Outer Frame & Teal Panel -->
+                            <rect x="672" y="248" width="198" height="152" rx="3" fill="#1C546B" stroke="#A3ADB4" stroke-width="5" class="transition duration-300 group-hover:stroke-[#E6C280]"/>
+
+                            <!-- Signboard Header Strip (PACT logo + Fresco Preview Strip + UNESCO) -->
+                            <rect x="676" y="252" width="190" height="34" fill="#163F52"/>
+                            <text x="684" y="266" fill="#FFFFFF" font-size="8.5" font-weight="bold">PACT</text>
+                            <text x="684" y="273" fill="#B8D8E8" font-size="4.2">Parco Archeologico</text>
+                            <text x="684" y="278" fill="#B8D8E8" font-size="4.2">di Cerveteri e Tarquinia</text>
+
+                            <!-- Mini fresco banner in top-center of sign -->
+                            <rect x="716" y="254" width="68" height="29" fill="#DDD3C5"/>
+                            <circle cx="732" cy="268" r="4" fill="#9E4738" opacity="0.7"/>
+                            <path d="M720,276 Q750,262 780,276" stroke="#3B6E8C" stroke-width="2" fill="none"/>
+
+                            <text x="792" y="266" fill="#FFFFFF" font-size="5" font-weight="bold">unesco</text>
+                            <text x="792" y="279" fill="#DCEBF2" font-size="6" font-weight="bold">Necropoli dei Monterozzi</text>
+
+                            <!-- Two Text Columns (Italian Left / English Right) -->
+                            <g fill="#C5E2F0" opacity="0.88">
+                                <rect x="686" y="295" width="52" height="3.2" rx="1" fill="#FFFFFF"/>
+                                <rect x="686" y="302" width="74" height="2"/>
+                                <rect x="686" y="307" width="76" height="2"/>
+                                <rect x="686" y="312" width="71" height="2"/>
+                                <rect x="686" y="317" width="75" height="2"/>
+                                <rect x="686" y="322" width="68" height="2"/>
+                                <rect x="686" y="327" width="73" height="2"/>
+                                <rect x="686" y="332" width="62" height="2"/>
+
+                                <rect x="774" y="295" width="56" height="3.2" rx="1" fill="#FFFFFF"/>
+                                <rect x="774" y="302" width="74" height="2"/>
+                                <rect x="774" y="307" width="76" height="2"/>
+                                <rect x="774" y="312" width="70" height="2"/>
+                                <rect x="774" y="317" width="74" height="2"/>
+                                <rect x="774" y="322" width="66" height="2"/>
+                                <rect x="774" y="327" width="72" height="2"/>
+                                <rect x="774" y="332" width="58" height="2"/>
+                            </g>
+
+                            <!-- QR Code Box & Architectural Plan / Cross Section at Bottom of Signboard -->
+                            <rect x="682" y="366" width="18" height="24" fill="#FFFFFF"/>
+                            <rect x="685" y="371" width="12" height="12" fill="#18303C"/>
                             <g id="outdoor-sign-diagram">
                                 <polygon points="720,382 765,382 765,372 795,372 795,385 720,385" fill="#5BC0EB"/>
                             </g>
 
                             <!-- Hover Callout Badge on Sign -->
-                            <rect x="712" y="338" width="118" height="22" rx="11" fill="#120E0C" fill-opacity="0.85" stroke="#E6C280" stroke-width="1.2"/>
-                            <text x="771" y="352" text-anchor="middle" fill="#F5EFE6" font-size="8.5" font-weight="bold">🔍 Click to Read Sign</text>
+                            <rect x="712" y="339" width="118" height="22" rx="11" fill="#120E0C" fill-opacity="0.88" stroke="#E6C280" stroke-width="1.3"/>
+                            <text x="771" y="353" text-anchor="middle" fill="#F5EFE6" font-size="8.5" font-weight="bold">🔍 Click to Read Sign</text>
                         </g>
                     </svg>
                 </div>
@@ -548,92 +756,112 @@
                  =============================================================== -->
             <section id="stage-2" class="hidden relative flex-1 w-full h-full flex flex-col justify-between overflow-hidden bg-[#14100D]">
                 
-                <!-- 3D Perspective Arched Stone Tunnel & Staircase SVG -->
-                <div id="tunnel-viewport" class="absolute inset-0 w-full h-full overflow-hidden transition-transform duration-700">
-                    <svg viewBox="0 0 1200 750" preserveAspectRatio="xMidYMid slice" class="w-full h-full">
+                <!-- Subterranean Stone Surround + Actual Descent Photo ("Descent into tomb.jpg") -->
+                <div id="tunnel-viewport" class="absolute inset-0 w-full h-full flex items-center justify-center overflow-hidden transition-transform duration-700 origin-center">
+                    
+                    <!-- Richly Textured Carved Tuff Stone Tunnel Framing -->
+                    <svg viewBox="0 0 1200 750" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 w-full h-full pointer-events-none">
                         <defs>
-                            <radialGradient id="tunnelLight" cx="55%" cy="38%" r="55%">
-                                <stop offset="0%" stop-color="#FFF3D1" stop-opacity="0.95"/>
-                                <stop offset="25%" stop-color="#D7BE96" stop-opacity="0.75"/>
-                                <stop offset="65%" stop-color="#6E5D4B" stop-opacity="0.85"/>
-                                <stop offset="100%" stop-color="#1E1813" stop-opacity="1"/>
-                            </radialGradient>
+                            <!-- 3D Procedural Volcanic Tuff Rock Relief Filter -->
+                            <filter id="tuffRockReliefStage2" x="0%" y="0%" width="100%" height="100%">
+                                <feTurbulence type="fractalNoise" baseFrequency="0.035 0.05" numOctaves="5" seed="14" result="noise"/>
+                                <feDiffuseLighting in="noise" lighting-color="#B8A386" surfaceScale="5" result="light">
+                                    <feDistantLight azimuth="55" elevation="38"/>
+                                </feDiffuseLighting>
+                                <feComponentTransfer in="light" result="contrastLight">
+                                    <feFuncR type="linear" slope="0.85" intercept="0.05"/>
+                                    <feFuncG type="linear" slope="0.78" intercept="0.04"/>
+                                    <feFuncB type="linear" slope="0.66" intercept="0.03"/>
+                                </feComponentTransfer>
+                                <feBlend mode="multiply" in="contrastLight" in2="SourceGraphic"/>
+                            </filter>
+
                             <linearGradient id="leftStoneWall" x1="0" y1="0" x2="1" y2="0">
-                                <stop offset="0%" stop-color="#3A3128"/>
-                                <stop offset="55%" stop-color="#6B5B4B"/>
-                                <stop offset="100%" stop-color="#473C31"/>
+                                <stop offset="0%" stop-color="#3E352B"/>
+                                <stop offset="50%" stop-color="#6B5C49"/>
+                                <stop offset="85%" stop-color="#4B4033"/>
+                                <stop offset="100%" stop-color="#231D17"/>
                             </linearGradient>
                             <linearGradient id="rightStoneWall" x1="1" y1="0" x2="0" y2="0">
-                                <stop offset="0%" stop-color="#352C24"/>
-                                <stop offset="50%" stop-color="#655647"/>
-                                <stop offset="100%" stop-color="#42382E"/>
+                                <stop offset="0%" stop-color="#3E352B"/>
+                                <stop offset="50%" stop-color="#6B5C49"/>
+                                <stop offset="85%" stop-color="#4B4033"/>
+                                <stop offset="100%" stop-color="#231D17"/>
                             </linearGradient>
+                            <radialGradient id="tunnelCeilingGlow2" cx="50%" cy="18%" r="55%">
+                                <stop offset="0%" stop-color="#8A7962"/>
+                                <stop offset="55%" stop-color="#4F4335"/>
+                                <stop offset="100%" stop-color="#1E1914"/>
+                            </radialGradient>
                         </defs>
 
-                        <!-- Base Arched Tunnel Background -->
-                        <rect width="1200" height="750" fill="#2A221B"/>
+                        <!-- Base Subterranean Rock Wall -->
+                        <rect width="1200" height="750" fill="#1C1713"/>
 
-                        <!-- Left Carved Tuff Stone Wall -->
-                        <polygon points="0,0 470,310 470,600 220,750 0,750" fill="url(#leftStoneWall)"/>
-                        <!-- Right Carved Tuff Stone Wall -->
-                        <polygon points="1200,0 730,310 730,600 980,750 1200,750" fill="url(#rightStoneWall)"/>
+                        <!-- Textured Left & Right Carved Tuff Walls -->
+                        <g filter="url(#tuffRockReliefStage2)">
+                            <rect x="0" y="0" width="420" height="750" fill="url(#leftStoneWall)"/>
+                            <rect x="780" y="0" width="420" height="750" fill="url(#rightStoneWall)"/>
+                            <path d="M0,0 L1200,0 L1200,190 Q600,30 0,190 Z" fill="url(#tunnelCeilingGlow2)"/>
 
-                        <!-- Barrel-Vaulted Arched Stone Ceiling -->
-                        <path d="M0,0 L470,310 Q600,190 730,310 L1200,0 Z" fill="url(#tunnelLight)"/>
+                            <!-- Warm Ochre & Limestone Mineral Patches (matching the real Tarquinia tunnel photo) -->
+                            <g fill="#B59B6D" opacity="0.42">
+                                <ellipse cx="95" cy="210" rx="68" ry="42" transform="rotate(-12 95 210)"/>
+                                <ellipse cx="165" cy="390" rx="80" ry="48" transform="rotate(8 165 390)"/>
+                                <ellipse cx="75" cy="540" rx="62" ry="38" transform="rotate(-6 75 540)"/>
+                                <ellipse cx="195" cy="645" rx="72" ry="40"/>
+                                <ellipse cx="1090" cy="185" rx="74" ry="45" transform="rotate(14 1090 185)"/>
+                                <ellipse cx="1030" cy="355" rx="65" ry="44" transform="rotate(-10 1030 355)"/>
+                                <ellipse cx="1115" cy="510" rx="78" ry="46" transform="rotate(9 1115 510)"/>
+                                <ellipse cx="1025" cy="660" rx="66" ry="36"/>
+                            </g>
 
-                        <!-- Carved Tuff Stone Texture Patches & Chiselled Strata Lines -->
-                        <g stroke="#2B231C" stroke-width="1.5" opacity="0.35" fill="none">
-                            <path d="M70,120 Q600,-70 1130,120"/>
-                            <path d="M190,190 Q600,30 1010,190"/>
-                            <path d="M310,250 Q600,115 890,250"/>
-                            <path d="M0,340 L470,410 M0,490 L470,490 M0,630 L420,560"/>
-                            <path d="M1200,340 L730,410 M1200,490 L730,490 M1200,630 L780,560"/>
+                            <!-- Darker Damp Moss / Shadowed Stone Pockets -->
+                            <g fill="#26221C" opacity="0.55">
+                                <ellipse cx="140" cy="115" rx="55" ry="30"/>
+                                <ellipse cx="60" cy="310" rx="48" ry="35"/>
+                                <ellipse cx="170" cy="505" rx="52" ry="28"/>
+                                <ellipse cx="1045" cy="110" rx="58" ry="32"/>
+                                <ellipse cx="1125" cy="295" rx="50" ry="36"/>
+                                <ellipse cx="1015" cy="465" rx="45" ry="30"/>
+                            </g>
                         </g>
 
-                        <!-- Warm Ochre Tuff Rock Patches on Walls -->
-                        <g fill="#9A8467" opacity="0.28">
-                            <ellipse cx="140" cy="390" rx="65" ry="32" transform="rotate(-12 140 390)"/>
-                            <ellipse cx="260" cy="480" rx="50" ry="25" transform="rotate(-18 260 480)"/>
-                            <ellipse cx="1040" cy="420" rx="70" ry="30" transform="rotate(14 1040 420)"/>
-                            <ellipse cx="910" cy="510" rx="45" ry="22" transform="rotate(10 910 510)"/>
+                        <!-- Chiselled Strata Lines, Cracks & Perspective Tunnel Seams -->
+                        <g stroke="#1D1712" stroke-width="2.5" fill="none" opacity="0.7">
+                            <path d="M0,130 Q140,155 265,205"/>
+                            <path d="M0,285 Q135,305 265,335"/>
+                            <path d="M0,445 Q130,460 265,480"/>
+                            <path d="M0,610 Q140,605 265,595"/>
+
+                            <path d="M1200,125 Q1060,150 935,205"/>
+                            <path d="M1200,280 Q1065,300 935,335"/>
+                            <path d="M1200,445 Q1070,460 935,480"/>
+                            <path d="M1200,610 Q1060,605 935,595"/>
                         </g>
 
-                        <!-- Distant End Wall & Dark Tomb Doorway at Bottom of Stairs -->
-                        <path d="M470,310 Q600,195 730,310 L730,610 L470,610 Z" fill="#463A2E" stroke="#2B231C" stroke-width="3"/>
-                        
-                        <!-- The Recessed Glass Doorway at the Bottom of the Stairs -->
-                        <g class="cursor-pointer" onclick="walkDownAndStandAtDoor()">
-                            <rect x="530" y="385" width="140" height="215" rx="4" fill="#0B0908" stroke="#2D2620" stroke-width="8"/>
-                            <line x1="538" y1="440" x2="662" y2="440" stroke="#221D18" stroke-width="3"/>
-                            <line x1="538" y1="500" x2="662" y2="500" stroke="#221D18" stroke-width="3"/>
-                            <rect x="678" y="468" width="14" height="20" rx="2" fill="#18181B" stroke="#444"/>
-                            <circle cx="685" cy="480" r="4" fill="#EF4444"/>
+                        <!-- Diagonal Chisel Marks on Tuff Walls -->
+                        <g stroke="#CBB693" stroke-width="1.2" opacity="0.22">
+                            <line x1="45" y1="160" x2="75" y2="185"/><line x1="60" y1="155" x2="90" y2="180"/><line x1="75" y1="150" x2="105" y2="175"/>
+                            <line x1="120" y1="360" x2="155" y2="388"/><line x1="138" y1="355" x2="173" y2="383"/>
+                            <line x1="1060" y1="220" x2="1025" y2="248"/><line x1="1078" y1="215" x2="1043" y2="243"/>
+                            <line x1="1095" y1="485" x2="1060" y2="512"/><line x1="1112" y1="480" x2="1077" y2="507"/>
                         </g>
 
-                        <!-- Overhead Tunnel Lamp & Conduit Cable -->
-                        <path d="M1200,35 L745,320 L740,380" stroke="#3A3530" stroke-width="4" fill="none"/>
-                        <circle cx="695" cy="285" r="22" fill="#FFFBEB"/>
-                        <circle cx="695" cy="285" r="55" fill="#FDE68A" opacity="0.35"/>
-
-                        <!-- Descending Stone Steps -->
-                        <g stroke="#2A211B" stroke-width="2">
-                            <polygon points="445,600 755,600 780,622 420,622" fill="#6E5A47"/>
-                            <polygon points="420,622 780,622 810,648 390,648" fill="#78634E"/>
-                            <polygon points="390,648 810,648 845,678 355,678" fill="#826B54"/>
-                            <polygon points="355,678 845,678 885,712 315,712" fill="#8C745B"/>
-                            <polygon points="315,712 885,712 935,750 265,750" fill="#967D63"/>
-                        </g>
-
-                        <!-- Metal Handrails Leading Down to the Door -->
-                        <g stroke="#5C6468" stroke-width="8" stroke-linecap="round" fill="none">
-                            <path d="M220,750 L395,535 L515,535"/>
-                            <line x1="395" y1="535" x2="395" y2="675" stroke-width="6"/>
-                            <line x1="465" y1="535" x2="465" y2="615" stroke-width="5"/>
-                            <path d="M580,750 L620,555 L645,555"/>
-                            <path d="M920,750 L795,535 L705,535"/>
-                            <line x1="795" y1="535" x2="795" y2="675" stroke-width="6"/>
-                        </g>
+                        <!-- Inner Shadow Vignette Framing the Center Staircase Tunnel -->
+                        <rect x="0" y="0" width="1200" height="750" fill="none" stroke="#0E0B09" stroke-width="28" opacity="0.85"/>
                     </svg>
+
+                    <!-- Center Descent Photo Container -->
+                    <div onclick="walkDownAndStandAtDoor()" class="relative z-10 h-full w-full max-w-3xl flex items-center justify-center cursor-pointer group overflow-hidden shadow-[0_0_70px_rgba(0,0,0,0.95)] border-x-4 border-[#3A2F24] bg-[#14100D]">
+                        <img id="descent-photo"
+                             src="Descent into tomb.jpg"
+                             alt="Descent down the stairs into the Etruscan tomb"
+                             onerror="handleDescentFallback(this)"
+                             class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]" />
+                        <!-- Subtle rock-edge vignette blending the photo edges into the subterranean tunnel -->
+                        <div class="absolute inset-0 pointer-events-none shadow-[inset_0_0_55px_rgba(18,14,11,0.85)]"></div>
+                    </div>
                 </div>
 
                 <!-- Bottom Action Bar (Stage 2) -->
@@ -662,44 +890,108 @@
                 <!-- Surrounding Carved Tuff Stone Walls, Arched Lintel, & Handrail Context -->
                 <div class="relative flex-1 w-full h-full flex items-center justify-center overflow-hidden p-1.5 sm:p-3">
                     
-                    <!-- Background SVG providing the carved rock walls & bottom of the stairs context -->
+                    <!-- Background SVG providing realistic 3D carved volcanic tuff rock walls & doorway context -->
                     <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 w-full h-full pointer-events-none">
                         <defs>
-                            <radialGradient id="doorwayAmbient" cx="50%" cy="45%" r="60%">
-                                <stop offset="0%" stop-color="#584738"/>
-                                <stop offset="60%" stop-color="#2E241C"/>
-                                <stop offset="100%" stop-color="#140F0C"/>
+                            <!-- Realistic 3D Procedural Tuff Stone Texture Filter -->
+                            <filter id="tuffRockReliefStage3" x="0%" y="0%" width="100%" height="100%">
+                                <feTurbulence type="fractalNoise" baseFrequency="0.032 0.048" numOctaves="5" seed="29" result="rockNoise"/>
+                                <feDiffuseLighting in="rockNoise" lighting-color="#C8B294" surfaceScale="5.5" result="rockLight">
+                                    <fePointLight x="600" y="260" z="240"/>
+                                </feDiffuseLighting>
+                                <feComponentTransfer in="rockLight" result="tunedLight">
+                                    <feFuncR type="linear" slope="0.9" intercept="0.04"/>
+                                    <feFuncG type="linear" slope="0.82" intercept="0.03"/>
+                                    <feFuncB type="linear" slope="0.7" intercept="0.02"/>
+                                </feComponentTransfer>
+                                <feBlend mode="multiply" in="tunedLight" in2="SourceGraphic"/>
+                            </filter>
+
+                            <radialGradient id="doorwayAmbient" cx="50%" cy="46%" r="65%">
+                                <stop offset="0%" stop-color="#7C6852"/>
+                                <stop offset="48%" stop-color="#564737"/>
+                                <stop offset="82%" stop-color="#362C22"/>
+                                <stop offset="100%" stop-color="#1B1510"/>
                             </radialGradient>
+
+                            <linearGradient id="recessedLintelGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#211A14"/>
+                                <stop offset="50%" stop-color="#3A2E23"/>
+                                <stop offset="100%" stop-color="#17120E"/>
+                            </linearGradient>
                         </defs>
 
-                        <!-- Carved Subterranean Tuff Stone Wall Surround -->
-                        <rect width="1200" height="700" fill="url(#doorwayAmbient)"/>
+                        <!-- Textured Subterranean Tuff Stone Wall Surround -->
+                        <g filter="url(#tuffRockReliefStage3)">
+                            <rect width="1200" height="700" fill="url(#doorwayAmbient)"/>
 
-                        <!-- Arched Tunnel Vault Overhead -->
-                        <path d="M0,120 Q600,-60 1200,120 L1200,0 L0,0 Z" fill="#1F1813" opacity="0.8"/>
+                            <!-- Natural Tarquinia Limestone & Yellow-Ochre Tuff Mineral Patches -->
+                            <g fill="#BAA072" opacity="0.45">
+                                <ellipse cx="95" cy="165" rx="75" ry="44" transform="rotate(-14 95 165)"/>
+                                <ellipse cx="145" cy="340" rx="82" ry="52" transform="rotate(9 145 340)"/>
+                                <ellipse cx="70" cy="495" rx="68" ry="40" transform="rotate(-8 70 495)"/>
+                                <ellipse cx="320" cy="70" rx="90" ry="34"/>
+                                <ellipse cx="860" cy="65" rx="95" ry="36"/>
+                                <ellipse cx="1095" cy="175" rx="78" ry="46" transform="rotate(12 1095 175)"/>
+                                <ellipse cx="1055" cy="355" rx="85" ry="50" transform="rotate(-11 1055 355)"/>
+                                <ellipse cx="1120" cy="510" rx="72" ry="42" transform="rotate(7 1120 510)"/>
+                            </g>
 
-                        <!-- Rough-Hewn Volcanic Rock Blocks & Chisel Marks Left & Right -->
-                        <g stroke="#1B1410" stroke-width="2" fill="#3D3127" opacity="0.55">
-                            <rect x="-20" y="60" width="220" height="110" rx="14"/>
-                            <rect x="-10" y="180" width="195" height="125" rx="12"/>
-                            <rect x="-25" y="315" width="215" height="130" rx="16"/>
-                            <rect x="-15" y="455" width="205" height="140" rx="14"/>
+                            <!-- Deeper Weathered Stone Hollows -->
+                            <g fill="#2A221B" opacity="0.55">
+                                <ellipse cx="55" cy="255" rx="52" ry="34"/>
+                                <ellipse cx="155" cy="445" rx="58" ry="30"/>
+                                <ellipse cx="1035" cy="250" rx="54" ry="32"/>
+                                <ellipse cx="1135" cy="430" rx="50" ry="34"/>
+                                <ellipse cx="595" cy="45" rx="110" ry="26"/>
+                            </g>
 
-                            <rect x="1000" y="55" width="220" height="115" rx="14"/>
-                            <rect x="1010" y="180" width="205" height="120" rx="12"/>
-                            <rect x="995" y="310" width="225" height="135" rx="16"/>
-                            <rect x="1005" y="455" width="215" height="140" rx="14"/>
+                            <!-- Arched Barrel-Vaulted Tunnel Ceiling Overhead -->
+                            <path d="M0,145 Q600,-45 1200,145 L1200,0 L0,0 Z" fill="#2B231B" opacity="0.88"/>
                         </g>
 
-                        <!-- Bottom Stair Landing Floor -->
-                        <polygon points="0,615 1200,615 1200,700 0,700" fill="#231C16" stroke="#140F0C" stroke-width="2"/>
+                        <!-- Carved Recessed Stone Doorway Reveal / Bevel Around the Center Chamber Opening -->
+                        <path d="M135,620 L135,105 Q600,35 1065,105 L1065,620 L995,605 L995,135 Q600,75 205,135 L205,605 Z"
+                              fill="url(#recessedLintelGrad)" stroke="#1A140F" stroke-width="3" opacity="0.9"/>
 
-                        <!-- Ends of the Metal Handrails at the Bottom of the Stairs -->
-                        <g stroke="#5C6468" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.75">
-                            <path d="M0,650 L110,555 L175,555"/>
-                            <line x1="110" y1="555" x2="110" y2="700" stroke-width="8"/>
-                            <path d="M1200,650 L1090,555 L1025,555"/>
-                            <line x1="1090" y1="555" x2="1090" y2="700" stroke-width="8"/>
+                        <!-- Organic Chiselled Rock Seams, Fissures & Strata Crevices -->
+                        <g stroke="#1C1510" stroke-width="2.5" fill="none" opacity="0.72">
+                            <!-- Left wall rock seams -->
+                            <path d="M0,140 Q75,152 135,175"/>
+                            <path d="M0,265 Q65,255 135,275"/>
+                            <path d="M0,395 Q70,410 135,400"/>
+                            <path d="M0,515 Q68,505 135,525"/>
+                            <path d="M65,150 L52,260 M88,398 L74,510"/>
+
+                            <!-- Right wall rock seams -->
+                            <path d="M1200,145 Q1130,158 1065,175"/>
+                            <path d="M1200,270 Q1135,260 1065,280"/>
+                            <path d="M1200,390 Q1125,405 1065,395"/>
+                            <path d="M1200,515 Q1130,505 1065,525"/>
+                            <path d="M1125,155 L1138,265 M1110,395 L1122,508"/>
+
+                            <!-- Overhead arch stone joints -->
+                            <path d="M260,82 L285,122 M430,62 L442,102 M600,54 L600,95 M770,62 L758,102 M940,82 L915,122"/>
+                        </g>
+
+                        <!-- Subtle Highlight Ridges Along Rock Cracks -->
+                        <g stroke="#CBB492" stroke-width="1" fill="none" opacity="0.24">
+                            <path d="M0,143 Q75,155 135,178"/>
+                            <path d="M0,398 Q70,413 135,403"/>
+                            <path d="M1200,148 Q1130,161 1065,178"/>
+                            <path d="M1200,393 Q1125,408 1065,398"/>
+                        </g>
+
+                        <!-- Rough-Hewn Bottom Stair Landing Floor -->
+                        <polygon points="0,610 1200,610 1200,700 0,700" fill="#261F19" stroke="#140F0C" stroke-width="3"/>
+                        <path d="M40,645 Q320,635 610,648 T1160,640" stroke="#18130F" stroke-width="2" fill="none" opacity="0.7"/>
+
+                        <!-- Ends of the Galvanized Metal Handrails at the Bottom of the Stairs -->
+                        <g stroke="#6E777C" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.85">
+                            <path d="M-10,655 L95,560 L155,560"/>
+                            <line x1="95" y1="560" x2="95" y2="700" stroke-width="9"/>
+                            <path d="M1210,655 L1105,560 L1045,560"/>
+                            <line x1="1105" y1="560" x2="1105" y2="700" stroke-width="9"/>
                         </g>
                     </svg>
 
@@ -948,6 +1240,27 @@
                 diagramCaption: "Stepped corridor (dromos) leading into a single small quadrangular chamber with a double-sloped ceiling",
                 diagramType: "single-chamber-compact",
                 descEn: "This intimate single-chamber tomb takes its name from the lively Dionysian dance painted across its walls. Beneath a ceiling decorated with delicate four-petalled red flowers and concentric circles along the central ridge beam, the rear gable features a large central support flanked by two lions attacking spotted deer. On the main walls below, among slender trees, a bearded musician holding a lyre (cithara) and a double-flute player accompany dancers and a couple embracing in a joyful celebration of life and wine."
+            },
+            {
+                id: 6,
+                mapNum: 22,
+                titleIt: "Tomba dei Leopardi",
+                titleEn: "Tomb of the Leopards",
+                date: "Around 480–470 BCE",
+                frescoImgs: [
+                    "Tomb 6.1.jpg",
+                    "Tomb 6.2.jpg",
+                    "Tomb 6.3.jpg"
+                ],
+                photoLabels: [
+                    "Left Wall & Banquet View (Slide 1 of 3)",
+                    "Center Banquet & Leopards View (Slide 2 of 3)",
+                    "Right Wall Musicians View (Slide 3 of 3)"
+                ],
+                metaEn: "Year of discovery: 1875 • Dating: Around 480–470 B.C.",
+                diagramCaption: "Single rectangular chamber with a double-sloped ceiling and stepped entrance corridor (dromos)",
+                diagramType: "single-chamber",
+                descEn: "One of the most celebrated masterpieces of Etruscan painting, this single rectangular chamber features a double-sloped ceiling decorated with a vibrant four-color checkerboard pattern and concentric circles along the central ridge beam. In the rear pediment, two spotted leopards (or panthers) face each other heraldically across a slender sapling. On the main rear wall below, three aristocratic couples recline on cushioned banquet couches (klinai) attended by young cupbearers, while one banqueter holds up a symbolic egg of regeneration and rebirth. Along the left and right walls, a lively procession of servants and musicians playing the double flute (aulos), seven-stringed lyre (kithara), and castanets moves rhythmically through a grove of olive and laurel trees."
             }
         ];
 
@@ -1225,13 +1538,14 @@
             const container = document.getElementById('tomb-pills');
             if (!container) return;
             container.innerHTML = '';
+            const shortNames = ['1. Hunting', '2. Lotus', '3. Two Roofs', '4. Bartoccini', '5. Bacchants', '6. Leopards'];
             TOMBS.forEach((t, idx) => {
                 const btn = document.createElement('button');
                 const active = idx === currentTombIndex;
                 btn.className = `px-2.5 py-1 rounded-md text-xs font-bold transition ${
                     active ? 'bg-[#B84A39] text-white shadow' : 'text-[#A39281] hover:text-white'
                 }`;
-                btn.textContent = `Tomb ${idx + 1}`;
+                btn.textContent = shortNames[idx] || `Tomb ${idx + 1}`;
                 btn.onclick = () => selectTomb(idx);
                 container.appendChild(btn);
             });
@@ -1259,7 +1573,9 @@
                 if (prevArrow) prevArrow.classList.remove('hidden');
                 if (nextArrow) nextArrow.classList.remove('hidden');
                 if (labelEl) {
-                    labelEl.textContent = `Slide ${currentPhotoIndex + 1} of ${imgs.length}`;
+                    labelEl.textContent = (tomb.photoLabels && tomb.photoLabels[currentPhotoIndex])
+                        ? tomb.photoLabels[currentPhotoIndex]
+                        : `Slide ${currentPhotoIndex + 1} of ${imgs.length}`;
                 }
                 if (dotsEl) {
                     dotsEl.innerHTML = '';
@@ -1314,6 +1630,10 @@
         function startTourAtTomb(index) {
             selectTomb(index);
             goToStage(1);
+        }
+
+        function selectTombAndEnter(index) {
+            startTourAtTomb(index);
         }
 
         function selectTomb(index) {
@@ -1464,6 +1784,18 @@
 
         function closeSignboardModal() {
             document.getElementById('signboard-modal').classList.add('hidden');
+        }
+
+        function handleDescentFallback(imgEl) {
+            if (!imgEl.dataset.triedAlt) {
+                imgEl.dataset.triedAlt = 'true';
+                imgEl.src = 'Descent into tomb_2.jpg';
+                return;
+            }
+            if (imgEl.dataset.fallbackApplied === 'true') return;
+            imgEl.dataset.fallbackApplied = 'true';
+            const label = encodeURIComponent('Descent Photo Placeholder\n(Upload "Descent into tomb.jpg" to GitHub)');
+            imgEl.src = `https://placehold.co/900x1200/3D3227/F5EFE6?text=${label}`;
         }
 
         function handleFrescoFallback(imgEl) {
