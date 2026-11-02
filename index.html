@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tarquinia Etruscan Tombs — Interactive Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap');
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #120E0C;
+            color: #F5EFE6;
+        }
+
+        h1, h2, h3, #header-title-it, #modal-title-en {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .FrameShadow {
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.85);
+        }
+
+        /* Tactile 3D Red Push Button */
+        .red-button-3d {
+            background: radial-gradient(circle at 35% 30%, #ff5a4d, #d92618 60%, #8f1108 100%);
+            box-shadow: 
+                0 6px 0 #5a0904,
+                0 10px 20px rgba(0, 0, 0, 0.7),
+                inset 0 2px 4px rgba(255, 255, 255, 0.45);
+            transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .red-button-3d:active,
+        .red-button-3d.pressed {
+            transform: translateY(5px);
+            box-shadow: 
+                0 1px 0 #5a0904,
+                0 3px 8px rgba(0, 0, 0, 0.6),
+                inset 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes pulseRedGlow {
+            0%, 100% {
+                box-shadow: 0 6px 0 #5a0904, 0 0 15px rgba(239, 68, 68, 0.55), inset 0 2px 4px rgba(255, 255, 255, 0.45);
+            }
+            50% {
+                box-shadow: 0 6px 0 #5a0904, 0 0 28px rgba(239, 68, 68, 0.95), inset 0 2px 4px rgba(255, 255, 255, 0.45);
+            }
+        }
+
+        .red-button-pulse {
+            animation: pulseRedGlow 2s infinite;
+        }
+
+        /* Subtle glass reflection */
+        .glass-reflection {
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.08) 0%,
+                rgba(255, 255, 255, 0.02) 35%,
+                rgba(0, 0, 0, 0.75) 55%,
+                rgba(0, 0, 0, 0.92) 100%
+            );
+        }
+
+        /* Walking down stairs animation */
+        .walking-down {
+            animation: walkDownTunnel 0.95s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes walkDownTunnel {
+            0% { transform: scale(1) translateY(0); }
+            30% { transform: scale(1.12) translateY(6px); }
+            65% { transform: scale(1.28) translateY(-4px); }
+            100% { transform: scale(1.45) translateY(8px); }
+        }
+
+        /* Smooth slide-up modal */
+        .modal-enter {
+            animation: modalFadeIn 0.25s ease-out forwards;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.96) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Zoom & Pan utility styles */
+        .cursor-grab { cursor: grab; }
+        .cursor-grabbing { cursor: grabbing; }
+        .cursor-zoom-in { cursor: zoom-in; }
+
+        /* Map marker pulse */
+        @keyframes mapPinPulse {
+            0%, 100% { r: 12; opacity: 0.45; }
+            50% { r: 19; opacity: 0.15; }
+        }
+        .map-pin-halo {
+            animation: mapPinPulse 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col select-none bg-[#120E0C] overflow-hidden">
+
+    <!-- ===================================================================
+         TOP HEADER: TOMB TITLE & 5-TOMB SELECTOR
+         =================================================================== -->
+    <header class="w-full bg-[#1C1512]/95 border-b border-[#3E2F28] px-3 sm:px-6 py-2 sm:py-2.5 flex flex-wrap items-center justify-between gap-2 z-30 shrink-0 shadow-lg">
+        <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+            <span id="tomb-badge" class="px-2 sm:px-2.5 py-1 rounded-md text-[10px] sm:text-xs font-extrabold uppercase tracking-wider bg-[#B84A39] text-[#F5EFE6] shadow-sm shrink-0">
+                Tomb 1 of 5
+            </span>
+            <div class="truncate">
+                <h1 id="header-title-it" class="text-sm sm:text-xl font-bold text-[#F5EFE6] tracking-tight leading-tight truncate">
+                    Tomb of Hunting and Fishing
+                </h1>
+                <p id="header-title-en" class="text-[11px] sm:text-xs text-[#C8B9A6] font-medium truncate">
+                    Tomba della Caccia e della Pesca • 520–510 BCE
+                </p>
+            </div>
+        </div>
+
+        <!-- 5-Tomb Navigation Bar -->
+        <div class="flex items-center gap-1.5 sm:gap-2 ml-auto">
+            <button onclick="showSiteMap()" class="px-2 sm:px-2.5 py-1.5 rounded-lg bg-[#281F1A] hover:bg-[#3A2D27] text-[#E6C280] text-[11px] sm:text-xs font-bold border border-[#E6C280]/40 transition flex items-center gap-1.5 mr-0.5 sm:mr-1" title="View Necropolis Map">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span class="hidden md:inline">Site Map</span>
+            </button>
+            <div class="hidden xl:flex items-center bg-[#120E0C] p-1 rounded-lg border border-[#3E2F28] mr-1" id="tomb-pills">
+                <!-- Populated by JS -->
+            </div>
+
+            <button onclick="prevTomb()" class="px-2 sm:px-2.5 py-1.5 rounded-lg bg-[#281F1A] hover:bg-[#3A2D27] text-[#E6DEC8] text-xs font-semibold border border-[#4A3931] transition flex items-center gap-1" title="Previous Tomb">
+                <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                <span class="hidden sm:inline">Prev</span>
+            </button>
+            <button onclick="nextTomb()" class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-[#B84A39] hover:bg-[#D15643] text-white text-xs font-bold shadow transition flex items-center gap-1.5" title="Next Tomb">
+                <span>Next Tomb</span>
+                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- ===================================================================
+         MAIN VIEWPORT STAGE CONTAINER
+         =================================================================== -->
+    <main class="relative flex-1 w-full h-full flex items-center justify-center p-1.5 sm:p-4 overflow-hidden bg-[#0E0B09]">
+        
+        <div id="scene-frame" class="relative w-full max-w-6xl h-full max-h-[820px] rounded-xl sm:rounded-2xl overflow-hidden FrameShadow border border-[#3E2F28] bg-[#18120F] flex flex-col">
+
+            <!-- ===============================================================
+                 STAGE 0: NECROPOLI DEI MONTEROZZI INTERACTIVE SITE MAP
+                 =============================================================== -->
+            <section id="stage-0" class="relative flex-1 w-full h-full flex flex-col lg:flex-row bg-[#151415] overflow-y-auto lg:overflow-hidden z-20">
+                
+                <!-- Left / Center: Replica of the Black PACT Tactile Map Board -->
+                <div class="relative flex-1 min-h-[320px] sm:min-h-[420px] lg:h-full flex flex-col justify-between p-2 sm:p-5 bg-[#1B1B1D] border-b lg:border-b-0 lg:border-r border-[#333236] overflow-hidden">
+                    
+                    <div class="w-full h-full flex items-center justify-center">
+                        <svg viewBox="0 0 1000 620" class="w-full h-full max-h-[580px] select-none rounded-xl shadow-2xl border border-[#2F2F35]" style="background: linear-gradient(160deg, #232327 0%, #18181B 60%, #121214 100%);">
+                            
+                            <!-- Map Header -->
+                            <text x="330" y="36" fill="#E5DEC9" font-size="13" font-weight="800" letter-spacing="0.8">PARCO ARCHEOLOGICO DI CERVETERI E TARQUINIA</text>
+                            <text x="330" y="54" fill="#D5CBB8" font-size="12" font-weight="700" letter-spacing="0.6">TARQUINIA - NECROPOLI DEI MONTEROZZI</text>
+
+                            <!-- Top 5-Column Legend (With Red Highlights on Our 5 Tombs) -->
+                            <!-- Col 1: Services -->
+                            <g transform="translate(330, 76)" font-size="7.5" fill="#CFC8B8" font-weight="600">
+                                <polygon points="0,8 6,0 12,8" fill="#D9A74A"/>
+                                <text x="18" y="7">INGRESSO / ENTRANCE</text>
+                                <circle cx="6" cy="22" r="5" fill="#D9A74A"/>
+                                <text x="18" y="25">YOU ARE HERE</text>
+                                <circle cx="6" cy="40" r="5" fill="#D9A74A"/>
+                                <text x="18" y="43">TICKET OFFICE</text>
+                                <circle cx="6" cy="58" r="5" fill="#D9A74A"/>
+                                <text x="18" y="61">RELAX AREA</text>
+                            </g>
+
+                            <!-- Col 2: Tombs 1-5 (Highlight #4 Caccia e Pesca) -->
+                            <g transform="translate(455, 76)" font-size="7.5" fill="#CFC8B8" font-weight="600">
+                                <circle cx="6" cy="4" r="5.5" fill="#D9A74A"/><text x="4" y="6.5" fill="#111" font-size="6.5" font-weight="800">1</text>
+                                <text x="16" y="7">GIOCOLIERI</text>
+
+                                <circle cx="6" cy="22" r="5.5" fill="#D9A74A"/><text x="4" y="24.5" fill="#111" font-size="6.5" font-weight="800">2</text>
+                                <text x="16" y="25">LOCULI</text>
+
+                                <circle cx="6" cy="40" r="5.5" fill="#D9A74A"/><text x="4" y="42.5" fill="#111" font-size="6.5" font-weight="800">3</text>
+                                <text x="16" y="43">GUERRIERO</text>
+
+                                <!-- HIGHLIGHTED #4 -->
+                                <g class="cursor-pointer" onclick="startTourAtTomb(0)">
+                                    <rect x="-4" y="50" width="108" height="16" rx="4" fill="#E12D2D" fill-opacity="0.25" stroke="#FF5555" stroke-width="1"/>
+                                    <circle cx="6" cy="58" r="6.5" fill="#E12D2D"/><text x="3.5" y="60.5" fill="#FFF" font-size="7" font-weight="800">4</text>
+                                    <text x="16" y="61" fill="#FFF" font-weight="800">CACCIA E PESCA</text>
+                                </g>
+
+                                <circle cx="6" cy="76" r="5.5" fill="#D9A74A"/><text x="4" y="78.5" fill="#111" font-size="6.5" font-weight="800">5</text>
+                                <text x="16" y="79">CACCIATORE</text>
+                            </g>
+
+                            <!-- Col 3: Tombs 6-12 (Highlight #7 Fior di Loto & #11 Due Tetti) -->
+                            <g transform="translate(575, 76)" font-size="7.5" fill="#CFC8B8" font-weight="600">
+                                <circle cx="6" cy="4" r="5.5" fill="#D9A74A"/><text x="4" y="6.5" fill="#111" font-size="6.5" font-weight="800">6</text>
+                                <text x="16" y="7">LEONESSE</text>
+
+                                <!-- HIGHLIGHTED #7 -->
+                                <g class="cursor-pointer" onclick="startTourAtTomb(1)">
+                                    <rect x="-4" y="14" width="102" height="16" rx="4" fill="#E12D2D" fill-opacity="0.25" stroke="#FF5555" stroke-width="1"/>
+                                    <circle cx="6" cy="22" r="6.5" fill="#E12D2D"/><text x="3.5" y="24.5" fill="#FFF" font-size="7" font-weight="800">7</text>
+                                    <text x="16" y="25" fill="#FFF" font-weight="800">FIOR DI LOTO</text>
+                                </g>
+
+                                <circle cx="6" cy="40" r="5.5" fill="#D9A74A"/><text x="4" y="42.5" fill="#111" font-size="6.5" font-weight="800">8</text>
+                                <text x="16" y="43">PALLOTTINO</text>
+
+                                <circle cx="6" cy="58" r="5.5" fill="#D9A74A"/><text x="4" y="60.5" fill="#111" font-size="6.5" font-weight="800">9</text>
+                                <text x="16" y="61">PULCELLA</text>
+
+                                <!-- HIGHLIGHTED #11 -->
+                                <g class="cursor-pointer" onclick="startTourAtTomb(2)">
+                                    <rect x="-4" y="68" width="102" height="16" rx="4" fill="#E12D2D" fill-opacity="0.25" stroke="#FF5555" stroke-width="1"/>
+                                    <circle cx="6" cy="76" r="6.5" fill="#E12D2D"/><text x="2" y="78.5" fill="#FFF" font-size="6.5" font-weight="800">11</text>
+                                    <text x="16" y="79" fill="#FFF" font-weight="800">DUE TETTI</text>
+                                </g>
+                            </g>
+
+                            <!-- Col 4: Tombs 13-19 (Highlight #17 Bartoccini) -->
+                            <g transform="translate(690, 76)" font-size="7.5" fill="#CFC8B8" font-weight="600">
+                                <circle cx="6" cy="4" r="5.5" fill="#D9A74A"/><text x="2" y="6.5" fill="#111" font-size="6" font-weight="800">13</text>
+                                <text x="16" y="7">CARDARELLI</text>
+
+                                <circle cx="6" cy="22" r="5.5" fill="#D9A74A"/><text x="2" y="24.5" fill="#111" font-size="6" font-weight="800">15</text>
+                                <text x="16" y="25">FUSTIGAZIONE</text>
+
+                                <circle cx="6" cy="40" r="5.5" fill="#D9A74A"/><text x="2" y="42.5" fill="#111" font-size="6" font-weight="800">16</text>
+                                <text x="16" y="43">CACCIA AL CERVO</text>
+
+                                <!-- HIGHLIGHTED #17 -->
+                                <g class="cursor-pointer" onclick="startTourAtTomb(3)">
+                                    <rect x="-4" y="50" width="105" height="16" rx="4" fill="#E12D2D" fill-opacity="0.25" stroke="#FF5555" stroke-width="1"/>
+                                    <circle cx="6" cy="58" r="6.5" fill="#E12D2D"/><text x="2" y="60.5" fill="#FFF" font-size="6.5" font-weight="800">17</text>
+                                    <text x="16" y="61" fill="#FFF" font-weight="800">BARTOCCINI</text>
+                                </g>
+
+                                <circle cx="6" cy="76" r="5.5" fill="#D9A74A"/><text x="2" y="78.5" fill="#111" font-size="6" font-weight="800">19</text>
+                                <text x="16" y="79">FIORELLINI</text>
+                            </g>
+
+                            <!-- Col 5: Tombs 20-22 (Highlight #21 Baccanti) -->
+                            <g transform="translate(810, 76)" font-size="7.5" fill="#CFC8B8" font-weight="600">
+                                <circle cx="6" cy="4" r="5.5" fill="#D9A74A"/><text x="2" y="6.5" fill="#111" font-size="6" font-weight="800">20</text>
+                                <text x="16" y="7">DEMONI AZZURRI</text>
+
+                                <!-- HIGHLIGHTED #21 -->
+                                <g class="cursor-pointer" onclick="startTourAtTomb(4)">
+                                    <rect x="-4" y="14" width="102" height="16" rx="4" fill="#E12D2D" fill-opacity="0.25" stroke="#FF5555" stroke-width="1"/>
+                                    <circle cx="6" cy="22" r="6.5" fill="#E12D2D"/><text x="2" y="24.5" fill="#FFF" font-size="6.5" font-weight="800">21</text>
+                                    <text x="16" y="25" fill="#FFF" font-weight="800">BACCANTI</text>
+                                </g>
+
+                                <circle cx="6" cy="40" r="5.5" fill="#D9A74A"/><text x="2" y="42.5" fill="#111" font-size="6" font-weight="800">22</text>
+                                <text x="16" y="43">LEOPARDI</text>
+                            </g>
+
+                            <!-- =======================================================
+                                 NECROPOLIS PATHWAY NETWORK (REPLICA OF TACTILE BOARD)
+                                 ======================================================= -->
+                            <g stroke="#9DA39A" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                <!-- Entrance Ramp & Upper Left Path -->
+                                <path d="M 210 155 L 255 110 L 295 140 L 235 165 L 180 285 L 105 460" stroke-width="14"/>
+                                <!-- Left Branch Loop -->
+                                <path d="M 180 285 L 210 385 L 310 435" stroke-width="11"/>
+                                <path d="M 135 390 L 220 405" stroke-width="9"/>
+                                <!-- Main West-East Spine Avenue -->
+                                <path d="M 20 480 L 105 460 L 310 435 L 515 430 L 700 435" stroke-width="14"/>
+                                <!-- Due Tetti Loop (#11) -->
+                                <path d="M 435 432 L 455 468 L 485 468 L 515 430" stroke-width="8"/>
+                                <!-- North Fork to #13, #14 -->
+                                <path d="M 540 430 L 580 390 L 605 345" stroke-width="10"/>
+                                <path d="M 580 390 L 640 433" stroke-width="10"/>
+                                <!-- South Loop to #19, #20 -->
+                                <path d="M 605 433 L 600 495 L 620 535 L 670 555" stroke-width="10"/>
+                                <!-- East Roundabout -->
+                                <circle cx="715" cy="435" r="22" stroke-width="12" fill="#18181B"/>
+                                <!-- Northeast Spur to #17 Bartoccini -->
+                                <path d="M 732 422 L 855 340 L 835 300" stroke-width="13"/>
+                                <!-- Southeast Spur to #21 Baccanti & #22 Leopardi -->
+                                <path d="M 737 440 L 845 450 L 920 482 L 985 480" stroke-width="13"/>
+                            </g>
+
+                            <!-- Lower Perimeter Road Double Line -->
+                            <path d="M 20 535 L 480 520 L 590 568 L 710 568 L 885 510 L 990 510" stroke="#7A7F78" stroke-width="2" fill="none"/>
+                            <path d="M 20 543 L 480 528 L 590 576 L 710 576 L 885 518 L 990 518" stroke="#7A7F78" stroke-width="2" fill="none"/>
+
+                            <!-- Other Non-Selected Tomb Markers (Gold Dots) -->
+                            <g fill="#D9A74A" font-size="7" font-weight="800" text-anchor="middle">
+                                <circle cx="145" cy="442" r="7"/><text x="145" y="444.5" fill="#111">1</text>
+                                <circle cx="52" cy="368" r="7"/><text x="52" y="370.5" fill="#111">2</text>
+                                <circle cx="70" cy="368" r="7"/><text x="70" y="370.5" fill="#111">3</text>
+                                <circle cx="148" cy="322" r="7"/><text x="148" y="324.5" fill="#111">5</text>
+                                <circle cx="212" cy="332" r="7"/><text x="212" y="334.5" fill="#111">6</text>
+                                <circle cx="318" cy="472" r="7"/><text x="318" y="474.5" fill="#111">10</text>
+                                <circle cx="508" cy="395" r="7"/><text x="508" y="397.5" fill="#111">12</text>
+                                <circle cx="555" cy="368" r="7"/><text x="555" y="370.5" fill="#111">13</text>
+                                <circle cx="585" cy="330" r="7"/><text x="585" y="332.5" fill="#111">14</text>
+                                <circle cx="590" cy="415" r="7"/><text x="590" y="417.5" fill="#111">15</text>
+                                <circle cx="680" cy="395" r="7"/><text x="680" y="397.5" fill="#111">16</text>
+                                <circle cx="670" cy="458" r="7"/><text x="670" y="460.5" fill="#111">18</text>
+                                <circle cx="635" cy="495" r="7"/><text x="635" y="497.5" fill="#111">19</text>
+                                <circle cx="692" cy="530" r="7"/><text x="692" y="532.5" fill="#111">20</text>
+                            </g>
+
+                            <!-- =======================================================
+                                 PULSING RED INTERACTIVE BUTTONS FOR OUR 5 TOMBS ON MAP
+                                 ======================================================= -->
+                            <!-- Tomb 1 on Tour: #4 Caccia e Pesca -->
+                            <g class="cursor-pointer" onclick="startTourAtTomb(0)">
+                                <circle cx="172" cy="382" r="15" fill="#E12D2D" class="map-pin-halo"/>
+                                <circle cx="172" cy="382" r="11" fill="#E12D2D" stroke="#FFFFFF" stroke-width="2"/>
+                                <text x="172" y="386" fill="#FFFFFF" font-size="10" font-weight="800" text-anchor="middle">4</text>
+                            </g>
+
+                            <!-- Tomb 2 on Tour: #7 Fior di Loto -->
+                            <g class="cursor-pointer" onclick="startTourAtTomb(1)">
+                                <circle cx="212" cy="292" r="15" fill="#E12D2D" class="map-pin-halo"/>
+                                <circle cx="212" cy="292" r="11" fill="#E12D2D" stroke="#FFFFFF" stroke-width="2"/>
+                                <text x="212" y="296" fill="#FFFFFF" font-size="10" font-weight="800" text-anchor="middle">7</text>
+                            </g>
+
+                            <!-- Tomb 3 on Tour: #11 Due Tetti -->
+                            <g class="cursor-pointer" onclick="startTourAtTomb(2)">
+                                <circle cx="485" cy="456" r="15" fill="#E12D2D" class="map-pin-halo"/>
+                                <circle cx="485" cy="456" r="11" fill="#E12D2D" stroke="#FFFFFF" stroke-width="2"/>
+                                <text x="485" y="460" fill="#FFFFFF" font-size="9.5" font-weight="800" text-anchor="middle">11</text>
+                            </g>
+
+                            <!-- Tomb 4 on Tour: #17 Bartoccini -->
+                            <g class="cursor-pointer" onclick="startTourAtTomb(3)">
+                                <circle cx="818" cy="316" r="15" fill="#E12D2D" class="map-pin-halo"/>
+                                <circle cx="818" cy="316" r="11" fill="#E12D2D" stroke="#FFFFFF" stroke-width="2"/>
+                                <text x="818" y="320" fill="#FFFFFF" font-size="9.5" font-weight="800" text-anchor="middle">17</text>
+                            </g>
+
+                            <!-- Tomb 5 on Tour: #21 Baccanti -->
+                            <g class="cursor-pointer" onclick="startTourAtTomb(4)">
+                                <circle cx="965" cy="456" r="15" fill="#E12D2D" class="map-pin-halo"/>
+                                <circle cx="965" cy="456" r="11" fill="#E12D2D" stroke="#FFFFFF" stroke-width="2"/>
+                                <text x="965" y="460" fill="#FFFFFF" font-size="9.5" font-weight="800" text-anchor="middle">21</text>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Right Panel: Featured 5 Tombs List & Large ENTER Button -->
+                <div class="w-full lg:w-80 bg-[#18120F] p-4 sm:p-6 flex flex-col justify-between shrink-0 z-10">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-[#E12D2D]/20 border border-[#E12D2D]/40 text-[#FF6B6B] text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-2">
+                            <span class="w-2 h-2 rounded-full bg-[#E12D2D] animate-ping"></span>
+                            Interactive Tour
+                        </div>
+                        <h2 class="text-lg sm:text-xl font-extrabold text-[#F5EFE6] tracking-tight leading-snug">
+                            Monterozzi Necropolis
+                        </h2>
+                        <p class="text-xs text-[#C8B9A6] mt-1 leading-relaxed">
+                            The 5 tombs highlighted in <span class="text-[#FF5555] font-bold">red</span> on the map are ready to explore. Click any red marker or press <strong>ENTER</strong> below to begin.
+                        </p>
+
+                        <!-- List of the 5 Highlighted Tombs -->
+                        <div class="mt-3 sm:mt-4 space-y-1.5 sm:space-y-2">
+                            <button onclick="startTourAtTomb(0)" class="w-full text-left px-3 py-1.5 sm:py-2 rounded-lg bg-[#241B17] hover:bg-[#322520] border border-[#3E2F28] flex items-center gap-3 transition group">
+                                <span class="w-6 h-6 rounded-full bg-[#E12D2D] text-white text-xs font-extrabold flex items-center justify-center shrink-0 shadow">4</span>
+                                <div class="truncate">
+                                    <div class="text-xs font-bold text-[#F5EFE6] group-hover:text-[#E6C280] transition truncate">Tomb of Hunting & Fishing</div>
+                                    <div class="text-[10px] text-[#A39281]">Caccia e Pesca • 520 BCE</div>
+                                </div>
+                            </button>
+
+                            <button onclick="startTourAtTomb(1)" class="w-full text-left px-3 py-1.5 sm:py-2 rounded-lg bg-[#241B17] hover:bg-[#322520] border border-[#3E2F28] flex items-center gap-3 transition group">
+                                <span class="w-6 h-6 rounded-full bg-[#E12D2D] text-white text-xs font-extrabold flex items-center justify-center shrink-0 shadow">7</span>
+                                <div class="truncate">
+                                    <div class="text-xs font-bold text-[#F5EFE6] group-hover:text-[#E6C280] transition truncate">Tomb of the Lotus Flower</div>
+                                    <div class="text-[10px] text-[#A39281]">Fior di Loto • 520 BCE</div>
+                                </div>
+                            </button>
+
+                            <button onclick="startTourAtTomb(2)" class="w-full text-left px-3 py-1.5 sm:py-2 rounded-lg bg-[#241B17] hover:bg-[#322520] border border-[#3E2F28] flex items-center gap-3 transition group">
+                                <span class="w-6 h-6 rounded-full bg-[#E12D2D] text-white text-xs font-extrabold flex items-center justify-center shrink-0 shadow">11</span>
+                                <div class="truncate">
+                                    <div class="text-xs font-bold text-[#F5EFE6] group-hover:text-[#E6C280] transition truncate">Tomb of the Two Roofs</div>
+                                    <div class="text-[10px] text-[#A39281]">Due Tetti • 3rd Cent. BCE</div>
+                                </div>
+                            </button>
+
+                            <button onclick="startTourAtTomb(3)" class="w-full text-left px-3 py-1.5 sm:py-2 rounded-lg bg-[#241B17] hover:bg-[#322520] border border-[#3E2F28] flex items-center gap-3 transition group">
+                                <span class="w-6 h-6 rounded-full bg-[#E12D2D] text-white text-xs font-extrabold flex items-center justify-center shrink-0 shadow">17</span>
+                                <div class="truncate">
+                                    <div class="text-xs font-bold text-[#F5EFE6] group-hover:text-[#E6C280] transition truncate">Bartoccini Tomb (3 Views)</div>
+                                    <div class="text-[10px] text-[#A39281]">Bartoccini • 530 BCE</div>
+                                </div>
+                            </button>
+
+                            <button onclick="startTourAtTomb(4)" class="w-full text-left px-3 py-1.5 sm:py-2 rounded-lg bg-[#241B17] hover:bg-[#322520] border border-[#3E2F28] flex items-center gap-3 transition group">
+                                <span class="w-6 h-6 rounded-full bg-[#E12D2D] text-white text-xs font-extrabold flex items-center justify-center shrink-0 shadow">21</span>
+                                <div class="truncate">
+                                    <div class="text-xs font-bold text-[#F5EFE6] group-hover:text-[#E6C280] transition truncate">Tomb of the Bacchants</div>
+                                    <div class="text-[10px] text-[#A39281]">Baccanti • 510 BCE</div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Large ENTER Button on the Right -->
+                    <div class="mt-4 pt-3 border-t border-[#3E2F28]">
+                        <button onclick="startTourAtTomb(0)" class="w-full py-3.5 sm:py-4 px-6 rounded-xl bg-gradient-to-r from-[#D93829] to-[#B82518] hover:from-[#EB4636] hover:to-[#C92D1F] text-white font-extrabold text-base sm:text-lg tracking-wider uppercase shadow-xl flex items-center justify-center gap-3 transition transform hover:scale-[1.02] active:scale-[0.99] border border-[#FF7A6E]/40">
+                            <span>ENTER</span>
+                            <i class="fa-solid fa-arrow-right-to-bracket text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===============================================================
+                 STAGE 1: OUTSIDE THE TOMB (ILLUSTRATED ENTRANCE HUT & SIGNBOARD)
+                 =============================================================== -->
+            <section id="stage-1" class="hidden relative flex-1 w-full h-full flex flex-col justify-between overflow-hidden">
+                
+                <div class="absolute inset-0 w-full h-full">
+                    <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" class="w-full h-full">
+                        <defs>
+                            <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#2979FF"/>
+                                <stop offset="60%" stop-color="#68B2F8"/>
+                                <stop offset="100%" stop-color="#BBE0FF"/>
+                            </linearGradient>
+                            <linearGradient id="stuccoLight" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#8C7E6E"/>
+                                <stop offset="100%" stop-color="#6B5E50"/>
+                            </linearGradient>
+                            <linearGradient id="stuccoShadow" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#53493E"/>
+                                <stop offset="100%" stop-color="#383028"/>
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Mediterranean Sky -->
+                        <rect width="1200" height="460" fill="url(#skyGrad)"/>
+
+                        <!-- Distant Olive Trees & Monterozzi Grassy Field -->
+                        <path d="M0 410 Q300 390 600 415 T1200 400 L1200 500 L0 500 Z" fill="#6F7D44"/>
+                        <path d="M0 440 Q400 425 850 445 T1200 435 L1200 520 L0 520 Z" fill="#8A9656"/>
+
+                        <!-- Olive Tree Silhouette on Left -->
+                        <g transform="translate(150, 310)">
+                            <path d="M45 95 L45 60 L30 40 M45 65 L65 42" stroke="#4A3C2C" stroke-width="6" stroke-linecap="round"/>
+                            <ellipse cx="30" cy="35" rx="35" ry="22" fill="#556B3E"/>
+                            <ellipse cx="65" cy="38" rx="30" ry="20" fill="#687F4E"/>
+                            <ellipse cx="48" cy="22" rx="28" ry="18" fill="#7A915E"/>
+                        </g>
+
+                        <!-- Paved Travertine Walkway -->
+                        <polygon points="0,480 1200,470 1200,700 0,700" fill="#D5C5AC"/>
+                        <polygon points="80,700 430,455 580,455 580,555 240,700" fill="#9E8F7B"/>
+
+                        <!-- Sloped Entrance Structure (Casotto) -->
+                        <polygon points="60,445 595,140 595,455 430,455 60,480" fill="url(#stuccoShadow)"/>
+                        <!-- Terracotta Roof Tiles along the slope -->
+                        <g fill="#A86544" stroke="#5A3825" stroke-width="1.5">
+                            <path d="M55,445 Q80,425 105,420 L595,132 L602,145 L62,452 Z"/>
+                        </g>
+
+                        <!-- Front Rectangular Stucco Block Holding the Sign -->
+                        <rect x="575" y="220" width="380" height="335" fill="url(#stuccoLight)" stroke="#4A3F35" stroke-width="2"/>
+                        <!-- Terracotta Roof Cap on Front Block -->
+                        <rect x="568" y="206" width="394" height="18" rx="5" fill="#B56E4B" stroke="#5E3A24" stroke-width="1.5"/>
+
+                        <!-- Cast Ground Shadow -->
+                        <polygon points="575,555 955,555 920,620 120,585" fill="#6E6254" opacity="0.55"/>
+
+                        <!-- PACT Metal Signposts & Clickable Blue-Teal Signboard -->
+                        <g class="cursor-pointer group" onclick="openSignboardModal()">
+                            <!-- Galvanized Steel Poles -->
+                            <rect x="655" y="215" width="12" height="375" rx="4" fill="#B0B7BC" stroke="#6C757D"/>
+                            <rect x="875" y="215" width="12" height="375" rx="4" fill="#B0B7BC" stroke="#6C757D"/>
+
+                            <!-- Signboard Frame -->
+                            <rect x="672" y="250" width="198" height="150" rx="3" fill="#215B73" stroke="#9BA5AC" stroke-width="5" class="transition duration-300 group-hover:stroke-[#E6C280]"/>
+
+                            <!-- Signboard Header -->
+                            <rect x="676" y="254" width="190" height="34" fill="#184356"/>
+                            <text x="685" y="270" fill="#FFFFFF" font-size="9" font-weight="bold">PACT</text>
+                            <rect x="718" y="257" width="68" height="28" fill="#D8CFC2"/>
+                            <text x="795" y="278" fill="#DCEBF2" font-size="6.5">Necropoli dei Monterozzi</text>
+
+                            <!-- Two Text Columns -->
+                            <g fill="#B8D8E8" opacity="0.85">
+                                <rect x="686" y="298" width="76" height="3" rx="1"/>
+                                <rect x="686" y="305" width="72" height="2"/>
+                                <rect x="686" y="310" width="75" height="2"/>
+                                <rect x="686" y="315" width="70" height="2"/>
+                                <rect x="686" y="320" width="74" height="2"/>
+                                <rect x="686" y="325" width="65" height="2"/>
+                                <rect x="686" y="330" width="72" height="2"/>
+
+                                <rect x="776" y="298" width="76" height="3" rx="1"/>
+                                <rect x="776" y="305" width="72" height="2"/>
+                                <rect x="776" y="310" width="74" height="2"/>
+                                <rect x="776" y="315" width="68" height="2"/>
+                                <rect x="776" y="320" width="72" height="2"/>
+                                <rect x="776" y="325" width="64" height="2"/>
+                                <rect x="776" y="330" width="70" height="2"/>
+                            </g>
+
+                            <!-- Architectural Plan & Cross Section at Bottom of Signboard (Dynamic per Tomb) -->
+                            <rect x="684" y="366" width="18" height="22" fill="#FFFFFF"/>
+                            <g id="outdoor-sign-diagram">
+                                <polygon points="720,382 765,382 765,372 795,372 795,385 720,385" fill="#5BC0EB"/>
+                            </g>
+
+                            <!-- Hover Callout Badge on Sign -->
+                            <rect x="712" y="338" width="118" height="22" rx="11" fill="#120E0C" fill-opacity="0.85" stroke="#E6C280" stroke-width="1.2"/>
+                            <text x="771" y="352" text-anchor="middle" fill="#F5EFE6" font-size="8.5" font-weight="bold">🔍 Click to Read Sign</text>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- Bottom Action Bar (Stage 1) -->
+                <div class="relative z-10 mt-auto bg-gradient-to-t from-black/90 via-black/70 to-transparent p-3 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3">
+                    <div class="text-center sm:text-left">
+                        <p class="text-xs sm:text-sm text-[#E6DEC8] font-medium">
+                            <i class="fa-solid fa-circle-info text-[#38BDF8] mr-1.5"></i>
+                            Click the blue signboard to read about the tomb, or walk down the stairs.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 w-full sm:w-auto justify-center">
+                        <button onclick="goToStage(2)" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#B84A39] hover:bg-[#D15643] text-white text-xs sm:text-sm font-bold shadow-lg transition flex items-center justify-center gap-2">
+                            <span>Enter & Walk Down Stairs</span>
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===============================================================
+                 STAGE 2: TOP OF THE STAIRS LOOKING DOWN TO THE DOOR
+                 =============================================================== -->
+            <section id="stage-2" class="hidden relative flex-1 w-full h-full flex flex-col justify-between overflow-hidden bg-[#14100D]">
+                
+                <!-- 3D Perspective Arched Stone Tunnel & Staircase SVG -->
+                <div id="tunnel-viewport" class="absolute inset-0 w-full h-full overflow-hidden transition-transform duration-700">
+                    <svg viewBox="0 0 1200 750" preserveAspectRatio="xMidYMid slice" class="w-full h-full">
+                        <defs>
+                            <radialGradient id="tunnelLight" cx="55%" cy="38%" r="55%">
+                                <stop offset="0%" stop-color="#FFF3D1" stop-opacity="0.95"/>
+                                <stop offset="25%" stop-color="#D7BE96" stop-opacity="0.75"/>
+                                <stop offset="65%" stop-color="#6E5D4B" stop-opacity="0.85"/>
+                                <stop offset="100%" stop-color="#1E1813" stop-opacity="1"/>
+                            </radialGradient>
+                            <linearGradient id="leftStoneWall" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stop-color="#3A3128"/>
+                                <stop offset="55%" stop-color="#6B5B4B"/>
+                                <stop offset="100%" stop-color="#473C31"/>
+                            </linearGradient>
+                            <linearGradient id="rightStoneWall" x1="1" y1="0" x2="0" y2="0">
+                                <stop offset="0%" stop-color="#352C24"/>
+                                <stop offset="50%" stop-color="#655647"/>
+                                <stop offset="100%" stop-color="#42382E"/>
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Base Arched Tunnel Background -->
+                        <rect width="1200" height="750" fill="#2A221B"/>
+
+                        <!-- Left Carved Tuff Stone Wall -->
+                        <polygon points="0,0 470,310 470,600 220,750 0,750" fill="url(#leftStoneWall)"/>
+                        <!-- Right Carved Tuff Stone Wall -->
+                        <polygon points="1200,0 730,310 730,600 980,750 1200,750" fill="url(#rightStoneWall)"/>
+
+                        <!-- Barrel-Vaulted Arched Stone Ceiling -->
+                        <path d="M0,0 L470,310 Q600,190 730,310 L1200,0 Z" fill="url(#tunnelLight)"/>
+
+                        <!-- Carved Tuff Stone Texture Patches & Chiselled Strata Lines -->
+                        <g stroke="#2B231C" stroke-width="1.5" opacity="0.35" fill="none">
+                            <path d="M70,120 Q600,-70 1130,120"/>
+                            <path d="M190,190 Q600,30 1010,190"/>
+                            <path d="M310,250 Q600,115 890,250"/>
+                            <path d="M0,340 L470,410 M0,490 L470,490 M0,630 L420,560"/>
+                            <path d="M1200,340 L730,410 M1200,490 L730,490 M1200,630 L780,560"/>
+                        </g>
+
+                        <!-- Warm Ochre Tuff Rock Patches on Walls -->
+                        <g fill="#9A8467" opacity="0.28">
+                            <ellipse cx="140" cy="390" rx="65" ry="32" transform="rotate(-12 140 390)"/>
+                            <ellipse cx="260" cy="480" rx="50" ry="25" transform="rotate(-18 260 480)"/>
+                            <ellipse cx="1040" cy="420" rx="70" ry="30" transform="rotate(14 1040 420)"/>
+                            <ellipse cx="910" cy="510" rx="45" ry="22" transform="rotate(10 910 510)"/>
+                        </g>
+
+                        <!-- Distant End Wall & Dark Tomb Doorway at Bottom of Stairs -->
+                        <path d="M470,310 Q600,195 730,310 L730,610 L470,610 Z" fill="#463A2E" stroke="#2B231C" stroke-width="3"/>
+                        
+                        <!-- The Recessed Glass Doorway at the Bottom of the Stairs -->
+                        <g class="cursor-pointer" onclick="walkDownAndStandAtDoor()">
+                            <rect x="530" y="385" width="140" height="215" rx="4" fill="#0B0908" stroke="#2D2620" stroke-width="8"/>
+                            <line x1="538" y1="440" x2="662" y2="440" stroke="#221D18" stroke-width="3"/>
+                            <line x1="538" y1="500" x2="662" y2="500" stroke="#221D18" stroke-width="3"/>
+                            <rect x="678" y="468" width="14" height="20" rx="2" fill="#18181B" stroke="#444"/>
+                            <circle cx="685" cy="480" r="4" fill="#EF4444"/>
+                        </g>
+
+                        <!-- Overhead Tunnel Lamp & Conduit Cable -->
+                        <path d="M1200,35 L745,320 L740,380" stroke="#3A3530" stroke-width="4" fill="none"/>
+                        <circle cx="695" cy="285" r="22" fill="#FFFBEB"/>
+                        <circle cx="695" cy="285" r="55" fill="#FDE68A" opacity="0.35"/>
+
+                        <!-- Descending Stone Steps -->
+                        <g stroke="#2A211B" stroke-width="2">
+                            <polygon points="445,600 755,600 780,622 420,622" fill="#6E5A47"/>
+                            <polygon points="420,622 780,622 810,648 390,648" fill="#78634E"/>
+                            <polygon points="390,648 810,648 845,678 355,678" fill="#826B54"/>
+                            <polygon points="355,678 845,678 885,712 315,712" fill="#8C745B"/>
+                            <polygon points="315,712 885,712 935,750 265,750" fill="#967D63"/>
+                        </g>
+
+                        <!-- Metal Handrails Leading Down to the Door -->
+                        <g stroke="#5C6468" stroke-width="8" stroke-linecap="round" fill="none">
+                            <path d="M220,750 L395,535 L515,535"/>
+                            <line x1="395" y1="535" x2="395" y2="675" stroke-width="6"/>
+                            <line x1="465" y1="535" x2="465" y2="615" stroke-width="5"/>
+                            <path d="M580,750 L620,555 L645,555"/>
+                            <path d="M920,750 L795,535 L705,535"/>
+                            <line x1="795" y1="535" x2="795" y2="675" stroke-width="6"/>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- Bottom Action Bar (Stage 2) -->
+                <div class="relative z-10 mt-auto bg-gradient-to-t from-black/95 via-black/80 to-transparent p-3 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3">
+                    <button onclick="goToStage(1)" class="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-[#261E1A] hover:bg-[#382C26] text-[#D5C7B8] text-xs font-semibold border border-[#4A3931] transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-arrow-up"></i>
+                        <span>Back Outside</span>
+                    </button>
+
+                    <button id="walk-down-btn" onclick="walkDownAndStandAtDoor()" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#C87D32] hover:bg-[#DF8E3C] text-white text-xs sm:text-sm font-bold shadow-xl transition flex items-center justify-center gap-2.5 animate-pulse">
+                        <i class="fa-solid fa-person-walking-arrow-right"></i>
+                        <span>Walk Down Stairs & Stand at the Door</span>
+                    </button>
+
+                    <div class="hidden sm:block text-xs text-[#A39281] font-mono">
+                        Depth: -5.5m
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===============================================================
+                 STAGE 3: STANDING AT THE GLASS DOOR IN THE CARVED ROCK TUNNEL
+                 =============================================================== -->
+            <section id="stage-3" class="hidden relative flex-1 w-full h-full flex flex-col justify-between overflow-hidden bg-[#120E0B]">
+                
+                <!-- Surrounding Carved Tuff Stone Walls, Arched Lintel, & Handrail Context -->
+                <div class="relative flex-1 w-full h-full flex items-center justify-center overflow-hidden p-1.5 sm:p-3">
+                    
+                    <!-- Background SVG providing the carved rock walls & bottom of the stairs context -->
+                    <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 w-full h-full pointer-events-none">
+                        <defs>
+                            <radialGradient id="doorwayAmbient" cx="50%" cy="45%" r="60%">
+                                <stop offset="0%" stop-color="#584738"/>
+                                <stop offset="60%" stop-color="#2E241C"/>
+                                <stop offset="100%" stop-color="#140F0C"/>
+                            </radialGradient>
+                        </defs>
+
+                        <!-- Carved Subterranean Tuff Stone Wall Surround -->
+                        <rect width="1200" height="700" fill="url(#doorwayAmbient)"/>
+
+                        <!-- Arched Tunnel Vault Overhead -->
+                        <path d="M0,120 Q600,-60 1200,120 L1200,0 L0,0 Z" fill="#1F1813" opacity="0.8"/>
+
+                        <!-- Rough-Hewn Volcanic Rock Blocks & Chisel Marks Left & Right -->
+                        <g stroke="#1B1410" stroke-width="2" fill="#3D3127" opacity="0.55">
+                            <rect x="-20" y="60" width="220" height="110" rx="14"/>
+                            <rect x="-10" y="180" width="195" height="125" rx="12"/>
+                            <rect x="-25" y="315" width="215" height="130" rx="16"/>
+                            <rect x="-15" y="455" width="205" height="140" rx="14"/>
+
+                            <rect x="1000" y="55" width="220" height="115" rx="14"/>
+                            <rect x="1010" y="180" width="205" height="120" rx="12"/>
+                            <rect x="995" y="310" width="225" height="135" rx="16"/>
+                            <rect x="1005" y="455" width="215" height="140" rx="14"/>
+                        </g>
+
+                        <!-- Bottom Stair Landing Floor -->
+                        <polygon points="0,615 1200,615 1200,700 0,700" fill="#231C16" stroke="#140F0C" stroke-width="2"/>
+
+                        <!-- Ends of the Metal Handrails at the Bottom of the Stairs -->
+                        <g stroke="#5C6468" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.75">
+                            <path d="M0,650 L110,555 L175,555"/>
+                            <line x1="110" y1="555" x2="110" y2="700" stroke-width="8"/>
+                            <path d="M1200,650 L1090,555 L1025,555"/>
+                            <line x1="1090" y1="555" x2="1090" y2="700" stroke-width="8"/>
+                        </g>
+                    </svg>
+
+                    <!-- Foreground Interactive Assembly: Enlarged Glass Door + Black Switch Box on Right Wall -->
+                    <div class="relative z-10 w-full max-w-5xl h-full flex flex-col md:flex-row items-center justify-center gap-2.5 sm:gap-5 px-1 sm:px-4 py-1">
+                        
+                        <!-- THE GLASS DOOR FRAME (Centered inside the rock opening) -->
+                        <div class="relative w-full max-w-4xl flex-1 md:flex-none h-[46vh] sm:h-[54vh] md:h-[60vh] max-h-[540px] rounded-xl p-1.5 sm:p-2.5 bg-gradient-to-b from-[#3A3532] via-[#24201E] to-[#1A1715] shadow-2xl border-2 border-[#4A423B] flex flex-col">
+                            
+                            <!-- Inner Metal Door Seal -->
+                            <div id="glass-viewport" class="relative flex-1 w-full h-full rounded-lg overflow-hidden bg-[#090706] border border-[#575049] flex items-center justify-center">
+                                
+                                <!-- THE FRESCO IMAGE / PLACEHOLDER (Zoomable & Pannable when lit) -->
+                                <img id="fresco-photo" 
+                                     src="" 
+                                     alt="Etruscan Tomb Fresco"
+                                     onerror="handleFrescoFallback(this)"
+                                     onmousedown="startFrescoDrag(event)"
+                                     ontouchstart="startFrescoTouch(event)"
+                                     ondblclick="quickToggleZoom(event)"
+                                     draggable="false"
+                                     class="w-full h-full object-contain bg-[#0F0C0A] filter brightness-0 contrast-75 transition-all duration-700 select-none origin-center" />
+
+                                <!-- Warm Halogen Light Overlay -->
+                                <div id="halogen-glow" class="absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-700"
+                                     style="background: radial-gradient(circle at 50% 25%, rgba(255, 238, 195, 0.22), transparent 75%);"></div>
+
+                                <!-- Dark Unlit Glass Reflection & Prompt Overlay -->
+                                <div id="dark-glass-overlay" class="absolute inset-0 glass-reflection flex flex-col items-center justify-center p-4 sm:p-6 text-center transition-opacity duration-700">
+                                    <div class="bg-black/80 backdrop-blur-md px-4 sm:px-5 py-3 sm:py-4 rounded-2xl border border-white/15 max-w-xs shadow-2xl">
+                                        <p class="text-xs sm:text-sm font-semibold text-[#F5EFE6]">
+                                            Push the large red button to view the fresco.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- TOP-LEFT ZOOM & PAN CONTROLS (Visible once light is turned ON) -->
+                                <div id="zoom-controls" class="hidden absolute top-2.5 left-2.5 z-30 flex items-center gap-1 sm:gap-1.5 bg-black/85 backdrop-blur-md px-2 py-1.5 rounded-xl border border-white/20 shadow-xl">
+                                    <button onclick="adjustFrescoZoom(-0.5)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#281F1A] hover:bg-[#B84A39] text-white flex items-center justify-center transition active:scale-95" title="Zoom Out">
+                                        <i class="fa-solid fa-magnifying-glass-minus text-xs"></i>
+                                    </button>
+                                    <span id="zoom-level-badge" class="text-[11px] sm:text-xs font-mono font-bold text-[#F5EFE6] px-1.5 min-w-[44px] text-center">
+                                        100%
+                                    </span>
+                                    <button onclick="adjustFrescoZoom(0.5)" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#281F1A] hover:bg-[#B84A39] text-white flex items-center justify-center transition active:scale-95" title="Zoom In">
+                                        <i class="fa-solid fa-magnifying-glass-plus text-xs"></i>
+                                    </button>
+                                    <button id="zoom-reset-btn" onclick="resetFrescoZoom()" class="hidden px-2 py-1 rounded-lg bg-[#3A2D27] hover:bg-[#4E3D35] text-[#E6C280] text-[10px] sm:text-xs font-bold transition ml-0.5" title="Reset Zoom">
+                                        Reset
+                                    </button>
+                                    <span id="zoom-drag-hint" class="hidden md:inline-block text-[10px] text-[#C8B9A6] pl-1.5 border-l border-white/15">
+                                        <i class="fa-solid fa-hand-pointer mr-1 text-[#E6C280]"></i>Scroll or drag to inspect
+                                    </span>
+                                </div>
+
+                                <!-- POWERPOINT-STYLE SLIDE ARROWS ON THE GLASS DOOR (For Multi-Image Tombs) -->
+                                <button id="ppt-prev-arrow" onclick="prevFrescoPhoto()" class="hidden absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-black/75 hover:bg-[#B84A39] text-white border-2 border-white/40 shadow-2xl flex items-center justify-center transition transform hover:scale-110 active:scale-95" title="Previous Image">
+                                    <i class="fa-solid fa-chevron-left text-sm sm:text-lg"></i>
+                                </button>
+
+                                <button id="ppt-next-arrow" onclick="nextFrescoPhoto()" class="hidden absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-black/75 hover:bg-[#B84A39] text-white border-2 border-white/40 shadow-2xl flex items-center justify-center transition transform hover:scale-110 active:scale-95" title="Next Image">
+                                    <i class="fa-solid fa-chevron-right text-sm sm:text-lg"></i>
+                                </button>
+
+                                <!-- Bottom-Center PowerPoint Slide Counter & Dots -->
+                                <div id="fresco-angle-controls" class="hidden absolute bottom-2.5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 sm:gap-3 bg-black/85 backdrop-blur-md px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full border border-white/25 shadow-xl">
+                                    <button onclick="prevFrescoPhoto()" class="text-xs font-bold text-[#E6C280] hover:text-white transition flex items-center gap-1">
+                                        <i class="fa-solid fa-caret-left"></i> Prev
+                                    </button>
+                                    <div id="ppt-slide-dots" class="flex items-center gap-1.5"></div>
+                                    <span id="fresco-angle-label" class="text-[10px] sm:text-xs font-extrabold text-white tracking-wide px-1">
+                                        Slide 1 of 3
+                                    </span>
+                                    <button onclick="nextFrescoPhoto()" class="text-xs font-bold text-[#E6C280] hover:text-white transition flex items-center gap-1">
+                                        Next <i class="fa-solid fa-caret-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- THE BLACK SWITCH BOX WITH LARGE RED PUSH-BUTTON -->
+                        <div class="flex flex-row md:flex-col items-center justify-center gap-3 bg-[#1A1613]/90 md:bg-transparent px-4 py-2 md:p-0 rounded-2xl border border-[#3E2F28] md:border-0 shrink-0">
+                            <div class="bg-[#F2ECE1] text-[#1A1614] px-2.5 py-1 rounded shadow-md border border-[#AE9F8C] text-center">
+                                <div class="text-[9px] font-extrabold uppercase tracking-wider">CHAMBER LIGHT</div>
+                                <div class="text-[8px] font-semibold text-[#5C5248]">Push Red Button</div>
+                            </div>
+
+                            <!-- Black Switch Box -->
+                            <div class="w-20 h-24 sm:w-28 sm:h-36 rounded-2xl bg-gradient-to-b from-[#2A2A2D] via-[#1B1B1E] to-[#101012] p-2 sm:p-3 shadow-2xl border-2 border-[#3F3F44] flex flex-col items-center justify-between relative">
+                                <!-- Corner Screws -->
+                                <div class="w-full flex justify-between px-0.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-[#555]"></span>
+                                    <span class="w-1.5 h-1.5 rounded-full bg-[#555]"></span>
+                                </div>
+
+                                <!-- Status LED -->
+                                <div class="flex items-center gap-1.5">
+                                    <span id="switch-led" class="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_6px_#ef4444]"></span>
+                                    <span id="switch-led-text" class="text-[8px] sm:text-[9px] font-mono uppercase tracking-wider text-stone-400">OFF</span>
+                                </div>
+
+                                <!-- Recessed Housing + Red Push-Button -->
+                                <div class="p-1.5 sm:p-2 rounded-full bg-[#0B0B0D] border border-[#38383D] shadow-inner">
+                                    <button id="red-push-button" 
+                                            onclick="pressRedLightButton()"
+                                            aria-label="Push Red Light Button"
+                                            class="red-button-3d red-button-pulse w-11 h-11 sm:w-16 sm:h-16 rounded-full cursor-pointer flex items-center justify-center focus:outline-none">
+                                        <span class="w-4 h-2 sm:w-6 sm:h-3 rounded-full bg-white/25 -mt-4 sm:-mt-6 pointer-events-none"></span>
+                                    </button>
+                                </div>
+
+                                <!-- Bottom Screws -->
+                                <div class="w-full flex justify-between px-0.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-[#555]"></span>
+                                    <span class="w-1.5 h-1.5 rounded-full bg-[#555]"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Bottom Bar (Stage 3: Back to Stairs & Next Tomb Button) -->
+                <div class="relative z-10 mt-auto bg-gradient-to-t from-black/95 via-black/85 to-transparent px-3 sm:px-5 py-2.5 sm:py-3.5 flex flex-wrap items-center justify-between gap-2">
+                    <button onclick="goToStage(2)" class="px-3 sm:px-3.5 py-2 rounded-xl bg-[#261E1A] hover:bg-[#382C26] text-[#D5C7B8] text-xs font-semibold border border-[#4A3931] transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Back to Stairs</span>
+                    </button>
+
+                    <button onclick="nextTomb()" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-[#B84A39] hover:bg-[#D15643] text-white text-xs sm:text-sm font-bold shadow-lg transition flex items-center gap-2 ml-auto">
+                        <span id="next-tomb-btn-label">Next Tomb</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- ===================================================================
+         MODAL: OFFICIAL PACT BLUE SIGNBOARD POP-UP (ENGLISH ONLY)
+         =================================================================== -->
+    <div id="signboard-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+        <div class="modal-enter relative w-full max-w-2xl rounded-xl overflow-hidden shadow-2xl border-4 border-[#9BA5AC] bg-[#215B73] text-white max-h-[90vh] flex flex-col">
+            
+            <!-- Top Sign Header Bar -->
+            <div class="bg-[#184356] px-4 sm:px-6 py-3 sm:py-4 border-b border-white/15 flex items-center justify-between shrink-0">
+                <div>
+                    <div class="text-[10px] font-bold uppercase tracking-widest text-[#8ED1FC]">
+                        PACT • Parco Archeologico di Cerveteri e Tarquinia
+                    </div>
+                    <h2 id="modal-title-en" class="text-base sm:text-xl font-bold tracking-tight mt-0.5">
+                        TOMB OF HUNTING AND FISHING
+                    </h2>
+                </div>
+                <button onclick="closeSignboardModal()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/30 hover:bg-black/50 text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- English Description Body -->
+            <div class="p-4 sm:p-6 overflow-y-auto space-y-4">
+                <p id="modal-desc-en" class="text-xs sm:text-sm leading-relaxed text-white/95"></p>
+                <div class="pt-3 border-t border-white/20 flex flex-wrap items-center justify-between gap-2 text-xs font-bold text-[#BAE6FD]">
+                    <span id="modal-meta-en">Year of discovery: 1873 • Dating: 520–510 BCE</span>
+                    <span>Necropoli dei Monterozzi, Tarquinia</span>
+                </div>
+            </div>
+
+            <!-- Bottom Architectural Diagram Strip -->
+            <div class="bg-[#1A4B60] px-4 sm:px-6 py-3 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded bg-white text-[#184356] flex items-center justify-center font-bold text-xs shrink-0">
+                        <i class="fa-solid fa-layer-group text-base"></i>
+                    </div>
+                    <div>
+                        <div class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#BAE6FD]">Subterranean Cross-Section & Plan</div>
+                        <div id="modal-diagram-caption" class="text-[10px] sm:text-[11px] text-white/80">Stepped dromos corridor leading down to two axial chambers</div>
+                    </div>
+                </div>
+                <div id="modal-diagram-svg-container" class="w-48 sm:w-56 h-14 flex items-center justify-end"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================
+         APPLICATION LOGIC & 5-TOMB DATA
+         =================================================================== -->
+    <script>
+        const TOMBS = [
+            {
+                id: 1,
+                titleIt: "Tomba della Caccia e della Pesca",
+                titleEn: "Tomb of Hunting and Fishing",
+                date: "520–510 BCE",
+                frescoImgs: ["Tomb 1.jpg"],
+                metaEn: "Year of discovery: 1873 • Dating: 520–510 BCE",
+                diagramCaption: "Stepped corridor (dromos) leading to two axial chambers with double-sloped ceilings",
+                diagramType: "two-chambers",
+                descEn: "The tomb is articulated in two axial chambers with a double-sloped ceiling. In the first chamber it is possible to observe on the walls a dance scene in a thick grove of trees adorned with ribbons, caskets and crowns; in the gable wall it is possible to recognize the scene of the return from the hunt. In the second room there is a large marine landscape within which a small boat is depicted with fishermen, a harpooner on a rock, a young swimmer diving from a cliff, and the deceased himself depicted in the gable while banqueting with his wife and servants."
+            },
+            {
+                id: 2,
+                titleIt: "Tomba del Fiore di Loto",
+                titleEn: "Tomb of the Lotus Flower",
+                date: "Around 520 BCE",
+                frescoImgs: ["Tomb 2.jpg"],
+                metaEn: "Year of discovery: 1962 • Dating: around 520 B.C.",
+                diagramCaption: "Single chamber with a double-sloped ceiling and a stepped entrance corridor (dromos)",
+                diagramType: "single-chamber",
+                descEn: "The tomb consists of a single chamber with a ceiling with a double slope and a stepped corridor (dromos). The decoration is concentrated on the two gables rendered in a similar way: in the centre, painted in brown, the large support of the central ceiling beam, with a lotus flower pointing downwards; on the sides, facing each other in a heraldic pattern, two felines; to the left a panther, to the right a lion. Below these scenes, a continuous frieze with 21 contiguous polychrome bands runs along all the walls of the tomb."
+            },
+            {
+                id: 3,
+                titleIt: "Tomba Due Tetti (Tomba 5636)",
+                titleEn: "Tomb of the Two Roofs",
+                date: "3rd Century BCE",
+                frescoImgs: ["Tomb 3.jpg"],
+                metaEn: "Year of discovery: 1969 • Dating: First half of the 3rd Century B.C.",
+                diagramCaption: "Hellenistic burial chamber featuring two pitched roof sections and rock-cut sarcophagus benches",
+                diagramType: "two-roofs",
+                descEn: "Carved during the Hellenistic period, this deep subterranean chamber takes its name from the unusual double-roof configuration of its ceiling. Above the rock-cut burial trench, the wall fresco depicts a moving farewell at the entrance to the afterlife: on the left stands the arched, bronze-studded Gate of the Underworld (Hades), guarded by the demon Charun seated and resting on his long hammer. In the center, deceased ancestors dressed in white togas—including a small child raising a hand—step forward to welcome a newly arrived family member escorted from the right by the female underworld demon Vanth."
+            },
+            {
+                id: 4,
+                titleIt: "Tomba Bartoccini",
+                titleEn: "Bartoccini Tomb",
+                date: "530–520 BCE",
+                frescoImgs: [
+                    "Tomb 4.1.jpg",
+                    "Tomb 4.2.jpg",
+                    "Tomb 4.3.jpg"
+                ],
+                metaEn: "Year of discovery: 1959 • Dating: 530–520 B.C.",
+                diagramCaption: "Large central chamber with a 5-color checkerboard ceiling giving access to three smaller side and rear chambers",
+                diagramType: "multi-chamber",
+                descEn: "Named after archaeologist Renato Bartoccini, this monumental tomb features a complex multi-room plan with a spacious central hall opening onto three smaller burial chambers. The central room is celebrated for its striking polychrome checkerboard ceiling and matching wall frieze painted in red, blue, black, brown, and white squares. In the rear gable above the doorway leading to the back chamber, couples recline on klinai couches at a lively aristocratic banquet. In the Middle Ages, the tomb was briefly reused by the Knights Templar, who carved crosses into the checkerboard frieze above the central doorway."
+            },
+            {
+                id: 5,
+                titleIt: "Tomba delle Baccanti",
+                titleEn: "Tomb of the Bacchants",
+                date: "510–500 BCE",
+                frescoImgs: ["Tomb 5.jpg"],
+                metaEn: "Year of discovery: 1874 • Dating: 510–500 B.C.",
+                diagramCaption: "Stepped corridor (dromos) leading into a single small quadrangular chamber with a double-sloped ceiling",
+                diagramType: "single-chamber-compact",
+                descEn: "This intimate single-chamber tomb takes its name from the lively Dionysian dance painted across its walls. Beneath a ceiling decorated with delicate four-petalled red flowers and concentric circles along the central ridge beam, the rear gable features a large central support flanked by two lions attacking spotted deer. On the main walls below, among slender trees, a bearded musician holding a lyre (cithara) and a double-flute player accompany dancers and a couple embracing in a joyful celebration of life and wine."
+            }
+        ];
+
+        let currentTombIndex = 0;
+        let currentStage = 0;
+        let currentPhotoIndex = 0;
+        let isLightOn = false;
+        let audioCtx = null;
+
+        // Zoom & Pan State
+        let frescoZoom = 1;
+        let frescoPanX = 0;
+        let frescoPanY = 0;
+        let isDraggingFresco = false;
+        let dragStartX = 0;
+        let dragStartY = 0;
+        let initialPinchDist = null;
+        let initialPinchZoom = 1;
+
+        function getDiagramSvgMarkup(type, isCompact) {
+            const strokeColor = "#BAE6FD";
+            const fillColor = "#4CC3FF";
+            const labelSize = isCompact ? "0" : "5.5";
+
+            if (type === "two-chambers") {
+                return `
+                    <svg viewBox="0 0 220 55" class="w-full h-full">
+                        <g fill="${fillColor}" fill-opacity="0.75" stroke="${strokeColor}" stroke-width="1.2">
+                            <rect x="6" y="24" width="20" height="4"/>
+                            <rect x="26" y="16" width="24" height="20"/>
+                            <rect x="50" y="23" width="6" height="6"/>
+                            <rect x="56" y="18" width="22" height="16"/>
+                        </g>
+                        <text x="42" y="48" fill="#BAE6FD" font-size="${labelSize}" text-anchor="middle">Plan (2 Rooms)</text>
+                        <line x1="92" y1="6" x2="92" y2="46" stroke="#ffffff33" stroke-width="1"/>
+                        <polyline points="100,12 115,12 140,36 144,36" fill="none" stroke="${strokeColor}" stroke-width="1.5"/>
+                        <polygon points="144,36 144,20 158,13 172,20 172,36" fill="${fillColor}" fill-opacity="0.8" stroke="${strokeColor}" stroke-width="1.2"/>
+                        <rect x="172" y="23" width="6" height="13" fill="${fillColor}" fill-opacity="0.6"/>
+                        <polygon points="178,36 178,21 191,14 204,21 204,36" fill="${fillColor}" fill-opacity="0.8" stroke="${strokeColor}" stroke-width="1.2"/>
+                        <text x="158" y="48" fill="#BAE6FD" font-size="${labelSize}" text-anchor="middle">Longitudinal Section (2 Chambers)</text>
+                    </svg>
+                `;
+            } else if (type === "multi-chamber") {
+                return `
+                    <svg viewBox="0 0 220 55" class="w-full h-full">
+                        <g fill="${fillColor}" fill-opacity="0.75" stroke="${strokeColor}" stroke-width="1.2">
+                            <rect x="6" y="24" width="16" height="5"/>
+                            <rect x="22" y="16" width="24" height="20"/>
+                            <rect x="27" y="5" width="14" height="11"/>
+                            <rect x="27" y="36" width="14" height="11"/>
+                            <rect x="46" y="19" width="16" height="14"/>
+                        </g>
+                        <text x="36" y="53" fill="#BAE6FD" font-size="${labelSize}" text-anchor="middle">Plan (4 Rooms)</text>
+                        <line x1="74" y1="6" x2="74" y2="46" stroke="#ffffff33" stroke-width="1"/>
+                        <polygon points="84,36 84,18 118,16 118,36" fill="${fillColor}" fill-opacity="0.8" stroke="${strokeColor}" stroke-width="1.2"/>
+                        <polygon points="118,36 118,21 136,21 136,36" fill="${fillColor}" fill-opacity="0.65" stroke="${strokeColor}" stroke-width="1.2"/>
+                        <text x="110" y="48" fill="#BAE6FD" font-size="${labelSize}" text-anchor="middle">Section A-A</text>
+                        <polygon points="150,36 150,23 162,20 162,36" fill="${fillColor}" fill-opacity="0.6" stroke="${strokeColor}" stroke-width="1.2"/>
+                        <polygon points="164,36 164,19 180,13 196,19 196,36" fill="${fillColor}" fill-opacity="0.85" stroke="${strokeColor}" stroke-width="1.2"/>
+                        <polygon points="198,36 198,23 210,20 210,36" fill="${fillColor}" fill-opacity="0.6" stroke="${strokeColor}" stroke-width="1.2"/>
+                        <text x="180" y="48" fill="#BAE6FD" font-size="${labelSize}" text-anchor="middle">Cross-Section</text>
+                    </svg>
+                `;
+            } else if (type === "two-roofs") {
+                return `
+                    <svg viewBox="0 0 220 55" class="w-full h-full">
+                        <g fill="${fillColor}" fill-opacity="0.75" stroke="${strokeColor}" stroke-width="1.2">
+                            <rect x="10" y="23" width="20" height="6"/>
+                            <rect x="30" y="13" width="38" height="26"/>
+                            <rect x="34" y="16" width="30" height="5" fill="#184356"/>
+                        </g>
+                        <text x="45" y="48" fill="#BAE6FD" font-size="${labelSize}" text-anchor="middle">Plan (Bench)</text>
+                        <line x1="82" y1="6" x2="82" y2="46" stroke="#ffffff33" stroke-width="1"/>
+                        <polygon points="94,36 94,20 112,12 130,20 146,13 162,20 162,36" fill="${fillColor}" fill-opacity="0.8" stroke="${strokeColor}" stroke-width="1.2"/>
+                        <text x="128" y="48" fill="#BAE6FD" font-size="${labelSize}" text-anchor="middle">Dual Roof Section</text>
+                        <polygon points="174,36 174,20 193,12 212,20 212,36 204,36 204,30 182,30 182,36" fill="${fillColor}" fill-opacity="0.8" stroke="${strokeColor}" stroke-width="1.2"/>
+                        <text x="193" y="48" fill="#BAE6FD" font-size="${labelSize}" text-anchor="middle">Burial Trench</text>
+                    </svg>
+                `;
+            } else {
+                const roomW = type === "single-chamber-compact" ? 28 : 36;
+                return `
+                    <svg viewBox="0 0 220 55" class="w-full h-full">
+                        <g fill="${fillColor}" fill-opacity="0.75" stroke="${strokeColor}" stroke-width="1.2">
+                            <rect x="14" y="12" width="${roomW}" height="26"/>
+                            <rect x="${14 + roomW}" y="21" width="12" height="8"/>
+                            <line x1="8" y1="25" x2="70" y2="25" stroke="#FFFFFF" stroke-width="0.7" stroke-dasharray="2,2"/>
+                            <line x1="${14 + roomW/2}" y1="6" x2="${14 + roomW/2}" y2="42" stroke="#FFFFFF" stroke-width="0.7" stroke-dasharray="2,2"/>
+                        </g>
+                        <text x="34" y="48" fill="#BAE6FD" font-size="${labelSize}" text-anchor="middle">Plan (1 Room)</text>
+                        <line x1="78" y1="6" x2="78" y2="46" stroke="#ffffff33" stroke-width="1"/>
+                        <polygon points="88,36 88,18 126,19 126,22 136,22 138,36" fill="${fillColor}" fill-opacity="0.8" stroke="${strokeColor}" stroke-width="1.2"/>
+                        <text x="113" y="48" fill="#BAE6FD" font-size="${labelSize}" text-anchor="middle">Section A-A</text>
+                        <polygon points="156,36 156,20 180,13 204,20 204,36" fill="${fillColor}" fill-opacity="0.8" stroke="${strokeColor}" stroke-width="1.2"/>
+                        <text x="180" y="48" fill="#BAE6FD" font-size="${labelSize}" text-anchor="middle">Section B-B</text>
+                    </svg>
+                `;
+            }
+        }
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) audioCtx = new AudioContext();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playFootstepSound() {
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                [0, 0.28, 0.56].forEach((delay) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(105, audioCtx.currentTime + delay);
+                    osc.frequency.exponentialRampToValueAtTime(38, audioCtx.currentTime + delay + 0.14);
+                    gain.gain.setValueAtTime(0.18, audioCtx.currentTime + delay);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + delay + 0.15);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(audioCtx.currentTime + delay);
+                    osc.stop(audioCtx.currentTime + delay + 0.16);
+                });
+            } catch (e) {}
+        }
+
+        function playSwitchSound() {
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(420, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(170, audioCtx.currentTime + 0.04);
+                gain.gain.setValueAtTime(0.22, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.09);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.1);
+            } catch (e) {}
+        }
+
+        function applyFrescoTransform() {
+            const img = document.getElementById('fresco-photo');
+            const badge = document.getElementById('zoom-level-badge');
+            const resetBtn = document.getElementById('zoom-reset-btn');
+            if (!img) return;
+
+            if (frescoZoom <= 1) {
+                frescoZoom = 1;
+                frescoPanX = 0;
+                frescoPanY = 0;
+            }
+
+            img.style.transform = `translate(${frescoPanX}px, ${frescoPanY}px) scale(${frescoZoom})`;
+
+            if (badge) {
+                badge.textContent = `${Math.round(frescoZoom * 100)}%`;
+            }
+            if (resetBtn) {
+                resetBtn.classList.toggle('hidden', frescoZoom === 1);
+            }
+
+            if (isLightOn) {
+                img.classList.toggle('cursor-grab', frescoZoom > 1 && !isDraggingFresco);
+                img.classList.toggle('cursor-grabbing', isDraggingFresco);
+                img.classList.toggle('cursor-zoom-in', frescoZoom === 1);
+            } else {
+                img.classList.remove('cursor-grab', 'cursor-grabbing', 'cursor-zoom-in');
+            }
+        }
+
+        function adjustFrescoZoom(delta) {
+            if (!isLightOn) return;
+            const img = document.getElementById('fresco-photo');
+            if (img) img.style.transition = 'transform 0.2s ease-out';
+            frescoZoom = Math.min(4, Math.max(1, +(frescoZoom + delta).toFixed(2)));
+            applyFrescoTransform();
+        }
+
+        function resetFrescoZoom() {
+            const img = document.getElementById('fresco-photo');
+            if (img) img.style.transition = 'transform 0.25s ease-out';
+            frescoZoom = 1;
+            frescoPanX = 0;
+            frescoPanY = 0;
+            applyFrescoTransform();
+        }
+
+        function quickToggleZoom(e) {
+            if (!isLightOn) return;
+            e.preventDefault();
+            if (frescoZoom > 1) {
+                resetFrescoZoom();
+            } else {
+                adjustFrescoZoom(1.25);
+            }
+        }
+
+        function startFrescoDrag(e) {
+            if (!isLightOn || frescoZoom <= 1) return;
+            e.preventDefault();
+            isDraggingFresco = true;
+            dragStartX = e.clientX - frescoPanX;
+            dragStartY = e.clientY - frescoPanY;
+            const img = document.getElementById('fresco-photo');
+            if (img) img.style.transition = 'none';
+            applyFrescoTransform();
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDraggingFresco) return;
+            frescoPanX = e.clientX - dragStartX;
+            frescoPanY = e.clientY - dragStartY;
+            applyFrescoTransform();
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (isDraggingFresco) {
+                isDraggingFresco = false;
+                applyFrescoTransform();
+            }
+        });
+
+        function getTouchDistance(touches) {
+            const dx = touches[0].clientX - touches[1].clientX;
+            const dy = touches[0].clientY - touches[1].clientY;
+            return Math.hypot(dx, dy);
+        }
+
+        function startFrescoTouch(e) {
+            if (!isLightOn) return;
+            const img = document.getElementById('fresco-photo');
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                initialPinchDist = getTouchDistance(e.touches);
+                initialPinchZoom = frescoZoom;
+                if (img) img.style.transition = 'none';
+            } else if (e.touches.length === 1 && frescoZoom > 1) {
+                isDraggingFresco = true;
+                dragStartX = e.touches[0].clientX - frescoPanX;
+                dragStartY = e.touches[0].clientY - frescoPanY;
+                if (img) img.style.transition = 'none';
+            }
+        }
+
+        window.addEventListener('touchmove', (e) => {
+            if (!isLightOn) return;
+            if (e.touches.length === 2 && initialPinchDist) {
+                e.preventDefault();
+                const dist = getTouchDistance(e.touches);
+                const scaleFactor = dist / initialPinchDist;
+                frescoZoom = Math.min(4, Math.max(1, +(initialPinchZoom * scaleFactor).toFixed(2)));
+                applyFrescoTransform();
+            } else if (e.touches.length === 1 && isDraggingFresco && frescoZoom > 1) {
+                e.preventDefault();
+                frescoPanX = e.touches[0].clientX - dragStartX;
+                frescoPanY = e.touches[0].clientY - dragStartY;
+                applyFrescoTransform();
+            }
+        }, { passive: false });
+
+        window.addEventListener('touchend', () => {
+            isDraggingFresco = false;
+            initialPinchDist = null;
+        });
+
+        function renderTombPills() {
+            const container = document.getElementById('tomb-pills');
+            if (!container) return;
+            container.innerHTML = '';
+            TOMBS.forEach((t, idx) => {
+                const btn = document.createElement('button');
+                const active = idx === currentTombIndex;
+                btn.className = `px-2.5 py-1 rounded-md text-xs font-bold transition ${
+                    active ? 'bg-[#B84A39] text-white shadow' : 'text-[#A39281] hover:text-white'
+                }`;
+                btn.textContent = `Tomb ${idx + 1}`;
+                btn.onclick = () => selectTomb(idx);
+                container.appendChild(btn);
+            });
+        }
+
+        function updateFrescoPhotoView() {
+            const tomb = TOMBS[currentTombIndex];
+            const imgs = tomb.frescoImgs || [];
+            const photoEl = document.getElementById('fresco-photo');
+            const controlsEl = document.getElementById('fresco-angle-controls');
+            const prevArrow = document.getElementById('ppt-prev-arrow');
+            const nextArrow = document.getElementById('ppt-next-arrow');
+            const labelEl = document.getElementById('fresco-angle-label');
+            const dotsEl = document.getElementById('ppt-slide-dots');
+
+            resetFrescoZoom();
+
+            if (photoEl && imgs.length > 0) {
+                delete photoEl.dataset.fallbackApplied;
+                photoEl.src = imgs[currentPhotoIndex];
+            }
+
+            if (imgs.length > 1) {
+                if (controlsEl) controlsEl.classList.remove('hidden');
+                if (prevArrow) prevArrow.classList.remove('hidden');
+                if (nextArrow) nextArrow.classList.remove('hidden');
+                if (labelEl) {
+                    labelEl.textContent = `Slide ${currentPhotoIndex + 1} of ${imgs.length}`;
+                }
+                if (dotsEl) {
+                    dotsEl.innerHTML = '';
+                    imgs.forEach((_, idx) => {
+                        const dot = document.createElement('button');
+                        dot.className = idx === currentPhotoIndex
+                            ? 'w-2.5 h-2.5 rounded-full bg-[#E6C280] transition'
+                            : 'w-2 h-2 rounded-full bg-white/35 hover:bg-white/60 transition';
+                        dot.onclick = () => goToFrescoPhoto(idx);
+                        dotsEl.appendChild(dot);
+                    });
+                }
+            } else {
+                if (controlsEl) controlsEl.classList.add('hidden');
+                if (prevArrow) prevArrow.classList.add('hidden');
+                if (nextArrow) nextArrow.classList.add('hidden');
+            }
+        }
+
+        function goToFrescoPhoto(idx) {
+            const tomb = TOMBS[currentTombIndex];
+            if (!tomb.frescoImgs || tomb.frescoImgs.length <= 1) return;
+            currentPhotoIndex = idx;
+            updateFrescoPhotoView();
+        }
+
+        function prevFrescoPhoto() {
+            const tomb = TOMBS[currentTombIndex];
+            if (!tomb.frescoImgs || tomb.frescoImgs.length <= 1) return;
+            currentPhotoIndex = (currentPhotoIndex - 1 + tomb.frescoImgs.length) % tomb.frescoImgs.length;
+            updateFrescoPhotoView();
+        }
+
+        function nextFrescoPhoto() {
+            const tomb = TOMBS[currentTombIndex];
+            if (!tomb.frescoImgs || tomb.frescoImgs.length <= 1) return;
+            currentPhotoIndex = (currentPhotoIndex + 1) % tomb.frescoImgs.length;
+            updateFrescoPhotoView();
+        }
+
+        function showSiteMap() {
+            resetLightToOff();
+            currentStage = 0;
+            const s0 = document.getElementById('stage-0');
+            if (s0) s0.classList.remove('hidden');
+            [1, 2, 3].forEach(s => {
+                const sec = document.getElementById(`stage-${s}`);
+                if (sec) sec.classList.add('hidden');
+            });
+        }
+
+        function startTourAtTomb(index) {
+            selectTomb(index);
+            goToStage(1);
+        }
+
+        function selectTomb(index) {
+            currentTombIndex = (index + TOMBS.length) % TOMBS.length;
+            currentPhotoIndex = 0;
+            const tomb = TOMBS[currentTombIndex];
+
+            document.getElementById('tomb-badge').textContent = `Tomb ${currentTombIndex + 1} of ${TOMBS.length}`;
+            document.getElementById('header-title-it').textContent = tomb.titleEn;
+            document.getElementById('header-title-en').textContent = `${tomb.titleIt} • ${tomb.date}`;
+
+            document.getElementById('modal-title-en').textContent = tomb.titleEn.toUpperCase();
+            document.getElementById('modal-desc-en').textContent = tomb.descEn;
+            document.getElementById('modal-meta-en').textContent = tomb.metaEn;
+            document.getElementById('modal-diagram-caption').textContent = tomb.diagramCaption;
+
+            const modalDiagContainer = document.getElementById('modal-diagram-svg-container');
+            if (modalDiagContainer) {
+                modalDiagContainer.innerHTML = getDiagramSvgMarkup(tomb.diagramType, false);
+            }
+
+            const outdoorSignDiag = document.getElementById('outdoor-sign-diagram');
+            if (outdoorSignDiag) {
+                outdoorSignDiag.innerHTML = `
+                    <foreignObject x="712" y="362" width="142" height="32">
+                        <div xmlns="http://www.w3.org/1999/xhtml" class="w-full h-full">
+                            ${getDiagramSvgMarkup(tomb.diagramType, true)}
+                        </div>
+                    </foreignObject>
+                `;
+            }
+
+            updateFrescoPhotoView();
+
+            const nextTombIndex = (currentTombIndex + 1) % TOMBS.length;
+            document.getElementById('next-tomb-btn-label').textContent = 
+                `Next Tomb (${TOMBS[nextTombIndex].titleEn})`;
+
+            renderTombPills();
+            if (currentStage !== 0) {
+                goToStage(1);
+            }
+        }
+
+        function prevTomb() {
+            selectTomb(currentTombIndex - 1);
+            if (currentStage === 0) goToStage(1);
+        }
+
+        function nextTomb() {
+            selectTomb(currentTombIndex + 1);
+            if (currentStage === 0) goToStage(1);
+        }
+
+        function goToStage(stageNum) {
+            currentStage = stageNum;
+            const s0 = document.getElementById('stage-0');
+            if (s0) s0.classList.toggle('hidden', stageNum !== 0);
+
+            [1, 2, 3].forEach(s => {
+                const sec = document.getElementById(`stage-${s}`);
+                if (sec) sec.classList.toggle('hidden', s !== stageNum);
+            });
+
+            const tunnel = document.getElementById('tunnel-viewport');
+            if (tunnel) tunnel.classList.remove('walking-down');
+
+            if (stageNum !== 3) {
+                resetLightToOff();
+            }
+        }
+
+        function walkDownAndStandAtDoor() {
+            playFootstepSound();
+            const tunnel = document.getElementById('tunnel-viewport');
+            const btn = document.getElementById('walk-down-btn');
+            if (tunnel) tunnel.classList.add('walking-down');
+            if (btn) btn.disabled = true;
+
+            setTimeout(() => {
+                if (btn) btn.disabled = false;
+                goToStage(3);
+            }, 900);
+        }
+
+        function pressRedLightButton() {
+            const btn = document.getElementById('red-push-button');
+            btn.classList.add('pressed');
+            setTimeout(() => btn.classList.remove('pressed'), 220);
+
+            playSwitchSound();
+
+            const photo = document.getElementById('fresco-photo');
+            const overlay = document.getElementById('dark-glass-overlay');
+            const glow = document.getElementById('halogen-glow');
+            const zoomControls = document.getElementById('zoom-controls');
+            const led = document.getElementById('switch-led');
+            const ledText = document.getElementById('switch-led-text');
+
+            isLightOn = true;
+            btn.classList.remove('red-button-pulse');
+
+            photo.style.filter = 'brightness(0.35) contrast(0.9)';
+            setTimeout(() => {
+                photo.style.filter = 'brightness(0.15) contrast(0.85)';
+            }, 90);
+            setTimeout(() => {
+                photo.style.filter = 'brightness(1.06) contrast(1.04) saturate(1.08)';
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                glow.classList.remove('opacity-0');
+                if (zoomControls) zoomControls.classList.remove('hidden');
+                applyFrescoTransform();
+            }, 200);
+
+            led.className = 'w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]';
+            ledText.textContent = 'ON';
+            ledText.className = 'text-[8px] sm:text-[9px] font-mono uppercase tracking-wider text-emerald-400';
+        }
+
+        function resetLightToOff() {
+            isLightOn = false;
+            resetFrescoZoom();
+
+            const photo = document.getElementById('fresco-photo');
+            const overlay = document.getElementById('dark-glass-overlay');
+            const glow = document.getElementById('halogen-glow');
+            const zoomControls = document.getElementById('zoom-controls');
+            const btn = document.getElementById('red-push-button');
+            const led = document.getElementById('switch-led');
+            const ledText = document.getElementById('switch-led-text');
+
+            if (photo) photo.style.filter = 'brightness(0) contrast(0.75)';
+            if (overlay) overlay.classList.remove('opacity-0', 'pointer-events-none');
+            if (glow) glow.classList.add('opacity-0');
+            if (zoomControls) zoomControls.classList.add('hidden');
+            if (btn) btn.classList.add('red-button-pulse');
+
+            if (led) led.className = 'w-2 h-2 rounded-full bg-red-500 shadow-[0_0_6px_#ef4444]';
+            if (ledText) {
+                ledText.textContent = 'OFF';
+                ledText.className = 'text-[8px] sm:text-[9px] font-mono uppercase tracking-wider text-stone-400';
+            }
+        }
+
+        function openSignboardModal() {
+            document.getElementById('signboard-modal').classList.remove('hidden');
+        }
+
+        function closeSignboardModal() {
+            document.getElementById('signboard-modal').classList.add('hidden');
+        }
+
+        function handleFrescoFallback(imgEl) {
+            if (imgEl.dataset.fallbackApplied === 'true') return;
+            imgEl.dataset.fallbackApplied = 'true';
+            const tomb = TOMBS[currentTombIndex];
+            const imgs = tomb.frescoImgs || [];
+            const currentFile = imgs[currentPhotoIndex] || 'Tomb 1.jpg';
+            const angleSuffix = imgs.length > 1 ? ` - View ${currentPhotoIndex + 1} of ${imgs.length}` : '';
+            const label = encodeURIComponent(`Fresco Photo Placeholder\n${tomb.titleEn}${angleSuffix} (${currentFile})`);
+            imgEl.src = `https://placehold.co/1200x900/8A3B2E/F5EFE6?text=${label}`;
+        }
+
+        window.onload = function () {
+            const viewport = document.getElementById('glass-viewport');
+            if (viewport) {
+                viewport.addEventListener('wheel', (e) => {
+                    if (!isLightOn) return;
+                    e.preventDefault();
+                    const delta = e.deltaY < 0 ? 0.25 : -0.25;
+                    adjustFrescoZoom(delta);
+                }, { passive: false });
+            }
+            selectTomb(0);
+            showSiteMap();
+        };
+    </script>
+</body>
+</html>
